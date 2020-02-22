@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The dash Core developers
+// Copyright (c) 2009-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_KEY_H
-#define E4COIN_KEY_H
+#ifndef BITCOIN_KEY_H
+#define BITCOIN_KEY_H
 
 #include "pubkey.h"
 #include "serialize.h"
@@ -189,4 +189,4 @@ void ECC_Stop(void);
 /** Check that required EC support is available at runtime. */
 bool ECC_InitSanityCheck(void);
 
-#endif // E4COIN_KEY_H
+#endif // BITCOIN_KEY_H

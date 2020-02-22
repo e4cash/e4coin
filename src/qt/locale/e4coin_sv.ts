@@ -164,8 +164,8 @@
         <translation>Bekräfta plånbokskryptering</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR E4COIN&lt;/b&gt;!</source>
-        <translation>Varning: Om du krypterar din plånbok och förlorar din lösenfras kommer du att &lt;b&gt;FÖRLORA ALLA DINA E4COIN&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR E4CN&lt;/b&gt;!</source>
+        <translation>Varning: Om du krypterar din plånbok och förlorar din lösenfras kommer du att &lt;b&gt;FÖRLORA ALLA DINA E4CN&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -217,7 +217,7 @@
     </message>
 </context>
 <context>
-    <name>e4coinGUI</name>
+    <name>BitcoinGUI</name>
     <message>
         <source>e4Coin Core</source>
         <translation>e4Coin Core
@@ -758,28 +758,28 @@ Adress: %4
         <translation>Vänligen välj en integritetsnivå.</translation>
     </message>
     <message>
-        <source>Use 2 separate masternodes to mix funds up to 1000 E4COIN</source>
-        <translation>Använd 2 enskilda masternoder för att mixa medel upp till 1000 E4COIN</translation>
+        <source>Use 2 separate masternodes to mix funds up to 1000 E4CN</source>
+        <translation>Använd 2 enskilda masternoder för att mixa medel upp till 1000 E4CN</translation>
     </message>
     <message>
-        <source>Use 8 separate masternodes to mix funds up to 1000 E4COIN</source>
-        <translation>Använd 8 enskilda masternoder för att mixa medel upp till 1000 E4COIN.</translation>
+        <source>Use 8 separate masternodes to mix funds up to 1000 E4CN</source>
+        <translation>Använd 8 enskilda masternoder för att mixa medel upp till 1000 E4CN.</translation>
     </message>
     <message>
         <source>Use 16 separate masternodes</source>
         <translation>Använd 16 enskilda masternoder</translation>
     </message>
     <message>
-        <source>This option is the quickest and will cost about ~0.025 E4COIN to anonymize 1000 E4COIN</source>
-        <translation>Detta alternativ är det snabbaste och kommer att kosta omkring ~0,025 E4COIN för att anonymisera 1000 E4COIN</translation>
+        <source>This option is the quickest and will cost about ~0.025 E4CN to anonymize 1000 E4CN</source>
+        <translation>Detta alternativ är det snabbaste och kommer att kosta omkring ~0,025 E4CN för att anonymisera 1000 E4CN</translation>
     </message>
     <message>
-        <source>This option is moderately fast and will cost about 0.05 E4COIN to anonymize 1000 E4COIN</source>
-        <translation>Detta alternativ är relativt snabbt och kommer att kosta omkring 0,05 E4COIN för att anonymisera 1000 E4COIN</translation>
+        <source>This option is moderately fast and will cost about 0.05 E4CN to anonymize 1000 E4CN</source>
+        <translation>Detta alternativ är relativt snabbt och kommer att kosta omkring 0,05 E4CN för att anonymisera 1000 E4CN</translation>
     </message>
     <message>
-        <source>0.1 E4COIN per 1000 E4COIN you anonymize.</source>
-        <translation>0,1 E4COIN per 1000 E4COIN du anonymiserar.</translation>
+        <source>0.1 E4CN per 1000 E4CN you anonymize.</source>
+        <translation>0,1 E4CN per 1000 E4CN du anonymiserar.</translation>
     </message>
     <message>
         <source>This is the slowest and most secure option. Using maximum anonymity will cost</source>
@@ -1238,8 +1238,8 @@ https://www.transifex.com/projects/p/e4coin/</translation>
         <translation>Mängd och omgångar:</translation>
     </message>
     <message>
-        <source>0 E4COIN / 0 Rounds</source>
-        <translation>0 E4COIN/0 omgångar</translation>
+        <source>0 E4CN / 0 Rounds</source>
+        <translation>0 E4CN/0 omgångar</translation>
     </message>
     <message>
         <source>Submitted Denom:</source>
@@ -2136,8 +2136,8 @@ https://www.transifex.com/projects/p/e4coin/</translation>
         <translation>Version %1</translation>
     </message>
     <message>
-        <source>The e4coin Core developers</source>
-        <translation>e4coin Core-utvecklarna</translation>
+        <source>The Bitcoin Core developers</source>
+        <translation>Bitcoin Core-utvecklarna</translation>
     </message>
     <message>
         <source>The e4Coin Core developers</source>
@@ -2726,8 +2726,8 @@ https://www.transifex.com/projects/p/e4coin/</translation>
         <translation>Kunde inte hitta tillräckliga Darksend-denominationsmedel för denna transaktion.</translation>
     </message>
     <message>
-        <source>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 E4COIN.</source>
-        <translation>Kunde inte hitta tillräckliga Darksend-icke-denominationsmedel för denna transaktion som inte är likvärdiga 1000 E4COIN.</translation>
+        <source>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 E4CN.</source>
+        <translation>Kunde inte hitta tillräckliga Darksend-icke-denominationsmedel för denna transaktion som inte är likvärdiga 1000 E4CN.</translation>
     </message>
     <message>
         <source>Warning: -paytxfee is set very high! This is the transaction fee you will pay if you send a transaction.</source>
@@ -3066,8 +3066,8 @@ https://www.transifex.com/projects/p/e4coin/</translation>
         <translation>Lösenord för JSON-RPC-anslutningar</translation>
     </message>
     <message>
-        <source>RPC SSL options: (see the e4coin Wiki for SSL setup instructions)</source>
-        <translation>RPC SSL-alternativ: (Se e4coin Wiki för SSL-inställningsinstruktioner)</translation>
+        <source>RPC SSL options: (see the Bitcoin Wiki for SSL setup instructions)</source>
+        <translation>RPC SSL-alternativ: (Se Bitcoin Wiki för SSL-inställningsinstruktioner)</translation>
     </message>
     <message>
         <source>RPC server options:</source>

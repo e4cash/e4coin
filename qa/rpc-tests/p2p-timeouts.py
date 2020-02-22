@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-# Copyright (c) 2016 The dash Core developers
+# Copyright (c) 2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
-""" TimeoutsTest -- test various net timeouts (only in extended tests)
+"""Test various net timeouts.
 
 - Create three bitcoind nodes:
 
@@ -24,7 +24,7 @@
 from time import sleep
 
 from test_framework.mininode import *
-from test_framework.test_framework import e4coinTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import *
 
 class TestNode(SingleNodeConnCB):
@@ -43,7 +43,7 @@ class TestNode(SingleNodeConnCB):
         # Don't send a verack in response
         self.received_version = True
 
-class TimeoutsTest(e4coinTestFramework):
+class TimeoutsTest(BitcoinTestFramework):
     def __init__(self):
         super().__init__()
         self.setup_clean_chain = True
@@ -53,8 +53,7 @@ class TimeoutsTest(e4coinTestFramework):
         self.nodes = []
 
         # Start up node0 to be a version 1, pre-segwit node.
-        self.nodes = start_nodes(self.num_nodes, self.options.tmpdir, 
-                [["-debug", "-logtimemicros=1"]])
+        self.nodes = start_nodes(self.num_nodes, self.options.tmpdir)
 
     def run_test(self):
         # Setup the p2p connections and start up the network thread.

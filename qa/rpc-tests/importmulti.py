@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2016 The dash Core developers
+# Copyright (c) 2014-2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
-
-from test_framework.test_framework import e4coinTestFramework
+"""Test the importmulti RPC."""
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import *
 
-class ImportMultiTest (e4coinTestFramework):
+class ImportMultiTest (BitcoinTestFramework):
     def __init__(self):
         super().__init__()
         self.num_nodes = 2
@@ -17,7 +17,7 @@ class ImportMultiTest (e4coinTestFramework):
         self.is_network_split=False
 
     def run_test (self):
-        print ("Mining blocks...")
+        self.log.info("Mining blocks...")
         self.nodes[0].generate(1)
         self.nodes[1].generate(1)
         timestamp = self.nodes[1].getblock(self.nodes[1].getbestblockhash())['mediantime']
@@ -47,8 +47,8 @@ class ImportMultiTest (e4coinTestFramework):
 
         # RPC importmulti -----------------------------------------------
 
-        # e4coin Address
-        print("Should import an address")
+        # Bitcoin Address
+        self.log.info("Should import an address")
         address = self.nodes[0].validateaddress(self.nodes[0].getnewaddress())
         result = self.nodes[1].importmulti([{
             "scriptPubKey": {
@@ -64,7 +64,7 @@ class ImportMultiTest (e4coinTestFramework):
         watchonly_address = address['address']
         watchonly_timestamp = timestamp
 
-        print("Should not import an invalid address")
+        self.log.info("Should not import an invalid address")
         result = self.nodes[1].importmulti([{
             "scriptPubKey": {
                 "address": "not valid address",
@@ -76,7 +76,7 @@ class ImportMultiTest (e4coinTestFramework):
         assert_equal(result[0]['error']['message'], 'Invalid address')
 
         # ScriptPubKey + internal
-        print("Should import a scriptPubKey with internal flag")
+        self.log.info("Should import a scriptPubKey with internal flag")
         address = self.nodes[0].validateaddress(self.nodes[0].getnewaddress())
         result = self.nodes[1].importmulti([{
             "scriptPubKey": address['scriptPubKey'],
@@ -90,7 +90,7 @@ class ImportMultiTest (e4coinTestFramework):
         assert_equal(address_assert['timestamp'], timestamp)
 
         # ScriptPubKey + !internal
-        print("Should not import a scriptPubKey without internal flag")
+        self.log.info("Should not import a scriptPubKey without internal flag")
         address = self.nodes[0].validateaddress(self.nodes[0].getnewaddress())
         result = self.nodes[1].importmulti([{
             "scriptPubKey": address['scriptPubKey'],
@@ -106,7 +106,7 @@ class ImportMultiTest (e4coinTestFramework):
 
 
         # Address + Public key + !Internal
-        print("Should import an address with public key")
+        self.log.info("Should import an address with public key")
         address = self.nodes[0].validateaddress(self.nodes[0].getnewaddress())
         result = self.nodes[1].importmulti([{
             "scriptPubKey": {
@@ -123,7 +123,7 @@ class ImportMultiTest (e4coinTestFramework):
 
 
         # ScriptPubKey + Public key + internal
-        print("Should import a scriptPubKey with internal and with public key")
+        self.log.info("Should import a scriptPubKey with internal and with public key")
         address = self.nodes[0].validateaddress(self.nodes[0].getnewaddress())
         request = [{
             "scriptPubKey": address['scriptPubKey'],
@@ -139,7 +139,7 @@ class ImportMultiTest (e4coinTestFramework):
         assert_equal(address_assert['timestamp'], timestamp)
 
         # ScriptPubKey + Public key + !internal
-        print("Should not import a scriptPubKey without internal and with public key")
+        self.log.info("Should not import a scriptPubKey without internal and with public key")
         address = self.nodes[0].validateaddress(self.nodes[0].getnewaddress())
         request = [{
             "scriptPubKey": address['scriptPubKey'],
@@ -156,7 +156,7 @@ class ImportMultiTest (e4coinTestFramework):
         assert_equal('timestamp' in address_assert, False)
 
         # Address + Private key + !watchonly
-        print("Should import an address with private key")
+        self.log.info("Should import an address with private key")
         address = self.nodes[0].validateaddress(self.nodes[0].getnewaddress())
         result = self.nodes[1].importmulti([{
             "scriptPubKey": {
@@ -172,7 +172,7 @@ class ImportMultiTest (e4coinTestFramework):
         assert_equal(address_assert['timestamp'], timestamp)
 
         # Address + Private key + watchonly
-        print("Should not import an address with private key and with watchonly")
+        self.log.info("Should not import an address with private key and with watchonly")
         address = self.nodes[0].validateaddress(self.nodes[0].getnewaddress())
         result = self.nodes[1].importmulti([{
             "scriptPubKey": {
@@ -191,7 +191,7 @@ class ImportMultiTest (e4coinTestFramework):
         assert_equal('timestamp' in address_assert, False)
 
         # ScriptPubKey + Private key + internal
-        print("Should import a scriptPubKey with internal and with private key")
+        self.log.info("Should import a scriptPubKey with internal and with private key")
         address = self.nodes[0].validateaddress(self.nodes[0].getnewaddress())
         result = self.nodes[1].importmulti([{
             "scriptPubKey": address['scriptPubKey'],
@@ -206,7 +206,7 @@ class ImportMultiTest (e4coinTestFramework):
         assert_equal(address_assert['timestamp'], timestamp)
 
         # ScriptPubKey + Private key + !internal
-        print("Should not import a scriptPubKey without internal and with private key")
+        self.log.info("Should not import a scriptPubKey without internal and with private key")
         address = self.nodes[0].validateaddress(self.nodes[0].getnewaddress())
         result = self.nodes[1].importmulti([{
             "scriptPubKey": address['scriptPubKey'],
@@ -233,7 +233,7 @@ class ImportMultiTest (e4coinTestFramework):
         timestamp = self.nodes[1].getblock(self.nodes[1].getbestblockhash())['mediantime']
         transaction = self.nodes[1].gettransaction(transactionid)
 
-        print("Should import a p2sh")
+        self.log.info("Should import a p2sh")
         result = self.nodes[1].importmulti([{
             "scriptPubKey": {
                 "address": multi_sig_script['address']
@@ -261,7 +261,7 @@ class ImportMultiTest (e4coinTestFramework):
         timestamp = self.nodes[1].getblock(self.nodes[1].getbestblockhash())['mediantime']
         transaction = self.nodes[1].gettransaction(transactionid)
 
-        print("Should import a p2sh with respective redeem script")
+        self.log.info("Should import a p2sh with respective redeem script")
         result = self.nodes[1].importmulti([{
             "scriptPubKey": {
                 "address": multi_sig_script['address']
@@ -289,7 +289,7 @@ class ImportMultiTest (e4coinTestFramework):
         timestamp = self.nodes[1].getblock(self.nodes[1].getbestblockhash())['mediantime']
         transaction = self.nodes[1].gettransaction(transactionid)
 
-        print("Should import a p2sh with respective redeem script and private keys")
+        self.log.info("Should import a p2sh with respective redeem script and private keys")
         result = self.nodes[1].importmulti([{
             "scriptPubKey": {
                 "address": multi_sig_script['address']
@@ -316,7 +316,7 @@ class ImportMultiTest (e4coinTestFramework):
         self.nodes[1].generate(1)
         transaction = self.nodes[1].gettransaction(transactionid)
 
-        print("Should import a p2sh with respective redeem script and private keys")
+        self.log.info("Should import a p2sh with respective redeem script and private keys")
         result = self.nodes[1].importmulti([{
             "scriptPubKey": {
                 "address": multi_sig_script['address']
@@ -332,7 +332,7 @@ class ImportMultiTest (e4coinTestFramework):
 
 
         # Address + Public key + !Internal + Wrong pubkey
-        print("Should not import an address with a wrong public key")
+        self.log.info("Should not import an address with a wrong public key")
         address = self.nodes[0].validateaddress(self.nodes[0].getnewaddress())
         address2 = self.nodes[0].validateaddress(self.nodes[0].getnewaddress())
         result = self.nodes[1].importmulti([{
@@ -352,7 +352,7 @@ class ImportMultiTest (e4coinTestFramework):
 
 
         # ScriptPubKey + Public key + internal + Wrong pubkey
-        print("Should not import a scriptPubKey with internal and with a wrong public key")
+        self.log.info("Should not import a scriptPubKey with internal and with a wrong public key")
         address = self.nodes[0].validateaddress(self.nodes[0].getnewaddress())
         address2 = self.nodes[0].validateaddress(self.nodes[0].getnewaddress())
         request = [{
@@ -372,7 +372,7 @@ class ImportMultiTest (e4coinTestFramework):
 
 
         # Address + Private key + !watchonly + Wrong private key
-        print("Should not import an address with a wrong private key")
+        self.log.info("Should not import an address with a wrong private key")
         address = self.nodes[0].validateaddress(self.nodes[0].getnewaddress())
         address2 = self.nodes[0].validateaddress(self.nodes[0].getnewaddress())
         result = self.nodes[1].importmulti([{
@@ -392,7 +392,7 @@ class ImportMultiTest (e4coinTestFramework):
 
 
         # ScriptPubKey + Private key + internal + Wrong private key
-        print("Should not import a scriptPubKey with internal and with a wrong private key")
+        self.log.info("Should not import a scriptPubKey with internal and with a wrong private key")
         address = self.nodes[0].validateaddress(self.nodes[0].getnewaddress())
         address2 = self.nodes[0].validateaddress(self.nodes[0].getnewaddress())
         result = self.nodes[1].importmulti([{
@@ -418,7 +418,7 @@ class ImportMultiTest (e4coinTestFramework):
         assert_equal(address_assert['timestamp'], watchonly_timestamp);
 
         # Bad or missing timestamps
-        print("Should throw on invalid or missing timestamp values")
+        self.log.info("Should throw on invalid or missing timestamp values")
         assert_raises_message(JSONRPCException, 'Missing required timestamp field for key',
             self.nodes[1].importmulti, [{
                 "scriptPubKey": address['scriptPubKey'],

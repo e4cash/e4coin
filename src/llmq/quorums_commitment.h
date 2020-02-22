@@ -1,9 +1,9 @@
-// Copyright (c) 2018 The e4Coin Core developers
+// Copyright (c) 2018 The Dash Core developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_QUORUMS_COMMITMENT_H
-#define E4COIN_QUORUMS_COMMITMENT_H
+#ifndef E4CN_QUORUMS_COMMITMENT_H
+#define E4CN_QUORUMS_COMMITMENT_H
 
 #include "consensus/params.h"
 
@@ -116,4 +116,4 @@ bool CheckLLMQCommitment(const CTransaction& tx, const CBlockIndex* pindexPrev, 
 
 }
 
-#endif //E4COIN_QUORUMS_COMMITMENT_H
+#endif //E4CN_QUORUMS_COMMITMENT_H

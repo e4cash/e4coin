@@ -1,11 +1,11 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The dash Core developers
-// Copyright (c) 2014-2017 The e4Coin Core developers
+// Copyright (c) 2009-2015 The Bitcoin Core developers
+// Copyright (c) 2014-2018 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_HASH_H
-#define E4COIN_HASH_H
+#ifndef BITCOIN_HASH_H
+#define BITCOIN_HASH_H
 
 #include "crypto/ripemd160.h"
 #include "crypto/sha256.h"
@@ -30,8 +30,8 @@
 
 typedef uint256 ChainCode;
 
-/* ----------- e4coin Hash ------------------------------------------------- */
-/** A hasher class for e4coin's 256-bit hash (double SHA-256). */
+/* ----------- Bitcoin Hash ------------------------------------------------- */
+/** A hasher class for Bitcoin's 256-bit hash (double SHA-256). */
 class CHash256 {
 private:
     CSHA256 sha;
@@ -55,7 +55,7 @@ public:
     }
 };
 
-/** A hasher class for e4coin's 160-bit hash (SHA-256 + RIPEMD-160). */
+/** A hasher class for Bitcoin's 160-bit hash (SHA-256 + RIPEMD-160). */
 class CHash160 {
 private:
     CSHA256 sha;
@@ -378,4 +378,4 @@ inline uint256 HashX11(const T1 pbegin, const T1 pend)
     return hash[10].trim256();
 }
 
-#endif // E4COIN_HASH_H
+#endif // BITCOIN_HASH_H

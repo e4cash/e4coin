@@ -1,9 +1,9 @@
-// Copyright (c) 2015 The dash Core developers
+// Copyright (c) 2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_ZMQ_ZMQPUBLISHNOTIFIER_H
-#define E4COIN_ZMQ_ZMQPUBLISHNOTIFIER_H
+#ifndef BITCOIN_ZMQ_ZMQPUBLISHNOTIFIER_H
+#define BITCOIN_ZMQ_ZMQPUBLISHNOTIFIER_H
 
 #include "zmqabstractnotifier.h"
 
@@ -34,6 +34,12 @@ class CZMQPublishHashBlockNotifier : public CZMQAbstractPublishNotifier
 {
 public:
     bool NotifyBlock(const CBlockIndex *pindex) override;
+};
+
+class CZMQPublishHashChainLockNotifier : public CZMQAbstractPublishNotifier
+{
+public:
+    bool NotifyChainLock(const CBlockIndex *pindex) override;
 };
 
 class CZMQPublishHashTransactionNotifier : public CZMQAbstractPublishNotifier
@@ -72,6 +78,12 @@ public:
     bool NotifyBlock(const CBlockIndex *pindex) override;
 };
 
+class CZMQPublishRawChainLockNotifier : public CZMQAbstractPublishNotifier
+{
+public:
+    bool NotifyChainLock(const CBlockIndex *pindex) override;
+};
+
 class CZMQPublishRawTransactionNotifier : public CZMQAbstractPublishNotifier
 {
 public:
@@ -101,4 +113,4 @@ class CZMQPublishRawInstantSendDoubleSpendNotifier : public CZMQAbstractPublishN
 public:
     bool NotifyInstantSendDoubleSpendAttempt(const CTransaction &currentTx, const CTransaction &previousTx) override;
 };
-#endif // E4COIN_ZMQ_ZMQPUBLISHNOTIFIER_H
+#endif // BITCOIN_ZMQ_ZMQPUBLISHNOTIFIER_H

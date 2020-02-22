@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2013 The dash Core developers
+// Copyright (c) 2011-2013 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -136,6 +136,10 @@ void QRDialog::update()
 
     setWindowTitle(strWindowtitle);
     ui->button_saveImage->setEnabled(false);
+    if (strTextInfo.isEmpty()) {
+        ui->outUri->setVisible(false);
+        adjustSize();
+    }
     ui->outUri->setText(strTextInfo);
 
 #ifdef USE_QRCODE

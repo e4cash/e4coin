@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
-# Copyright (c) 2016 The dash Core developers
+# Copyright (c) 2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
+"""Create a blockchain cache.
 
-#
-# Helper script to create the cache
-# (see e4coinTestFramework.setup_chain)
-#
+Creating a cache of the blockchain speeds up test execution when running
+multiple qa tests. This helper script is executed by rpc-tests when multiple
+tests are being run in parallel.
+"""
 
-from test_framework.test_framework import e4coinTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 
-class CreateCache(e4coinTestFramework):
+class CreateCache(BitcoinTestFramework):
 
     def __init__(self):
         super().__init__()

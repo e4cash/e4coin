@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2015 The dash Core developers
+// Copyright (c) 2011-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_QT_GUIUTIL_H
-#define E4COIN_QT_GUIUTIL_H
+#ifndef BITCOIN_QT_GUIUTIL_H
+#define BITCOIN_QT_GUIUTIL_H
 
 #include "amount.h"
 
@@ -46,9 +46,9 @@ namespace GUIUtil
     void setupAmountWidget(QLineEdit *widget, QWidget *parent);
 
     // Parse "e4coin:" URI into recipient object, return true on successful parsing
-    bool parsee4coinURI(const QUrl &uri, SendCoinsRecipient *out);
-    bool parsee4coinURI(QString uri, SendCoinsRecipient *out);
-    QString formate4coinURI(const SendCoinsRecipient &info);
+    bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out);
+    bool parseBitcoinURI(QString uri, SendCoinsRecipient *out);
+    QString formatBitcoinURI(const SendCoinsRecipient &info);
 
     // Returns true if given address+amount meets "dust" definition
     bool isDust(const QString& address, const CAmount& amount);
@@ -116,9 +116,6 @@ namespace GUIUtil
 	
     // Open e4coin.conf
     void openConfigfile();	
-
-    // Open masternode.conf
-    void openMNConfigfile();	
 
     // Browse backup folder
     void showBackups();
@@ -262,4 +259,4 @@ namespace GUIUtil
 
 } // namespace GUIUtil
 
-#endif // E4COIN_QT_GUIUTIL_H
+#endif // BITCOIN_QT_GUIUTIL_H

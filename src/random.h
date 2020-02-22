@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2014 The dash Core developers
+// Copyright (c) 2009-2014 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_RANDOM_H
-#define E4COIN_RANDOM_H
+#ifndef BITCOIN_RANDOM_H
+#define BITCOIN_RANDOM_H
 
 #include "uint256.h"
 
@@ -20,6 +20,8 @@ void GetRandBytes(unsigned char* buf, int num);
 uint64_t GetRand(uint64_t nMax);
 int GetRandInt(int nMax);
 uint256 GetRandHash();
+
+bool GetRandBool(double rate);
 
 /**
  * Function to gather random data from multiple sources, failing whenever any
@@ -54,4 +56,21 @@ public:
     uint32_t Rw;
 };
 
-#endif // E4COIN_RANDOM_H
+/* Number of random bytes returned by GetOSRand.
+ * When changing this constant make sure to change all call sites, and make
+ * sure that the underlying OS APIs for all platforms support the number.
+ * (many cap out at 256 bytes).
+ */
+static const ssize_t NUM_OS_RANDOM_BYTES = 32;
+
+/** Get 32 bytes of system entropy. Do not use this in application code: use
+ * GetStrongRandBytes instead.
+ */
+void GetOSRand(unsigned char *ent32);
+
+/** Check that OS randomness is available and returning the requested number
+ * of bytes.
+ */
+bool Random_SanityCheck();
+
+#endif // BITCOIN_RANDOM_H

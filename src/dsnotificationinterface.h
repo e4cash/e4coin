@@ -1,9 +1,9 @@
-// Copyright (c) 2015 The dash Core developers
+// Copyright (c) 2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_DSNOTIFICATIONINTERFACE_H
-#define E4COIN_DSNOTIFICATIONINTERFACE_H
+#ifndef BITCOIN_DSNOTIFICATIONINTERFACE_H
+#define BITCOIN_DSNOTIFICATIONINTERFACE_H
 
 #include "validationinterface.h"
 
@@ -22,9 +22,11 @@ protected:
     void NotifyHeaderTip(const CBlockIndex *pindexNew, bool fInitialDownload) override;
     void UpdatedBlockTip(const CBlockIndex *pindexNew, const CBlockIndex *pindexFork, bool fInitialDownload) override;
     void SyncTransaction(const CTransaction &tx, const CBlockIndex *pindex, int posInBlock) override;
+    void NotifyMasternodeListChanged(bool undo, const CDeterministicMNList& oldMNList, const CDeterministicMNListDiff& diff) override;
+    void NotifyChainLock(const CBlockIndex* pindex) override;
 
 private:
     CConnman& connman;
 };
 
-#endif // E4COIN_DSNOTIFICATIONINTERFACE_H
+#endif // BITCOIN_DSNOTIFICATIONINTERFACE_H

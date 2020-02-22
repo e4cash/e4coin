@@ -1,9 +1,9 @@
-// Copyright (c) 2018 The e4Coin Core developers
+// Copyright (c) 2018 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_SPECIALTX_H
-#define E4COIN_SPECIALTX_H
+#ifndef E4CN_SPECIALTX_H
+#define E4CN_SPECIALTX_H
 
 #include "primitives/transaction.h"
 #include "streams.h"
@@ -14,7 +14,7 @@ class CBlockIndex;
 class CValidationState;
 
 bool CheckSpecialTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValidationState& state);
-bool ProcessSpecialTxsInBlock(const CBlock& block, const CBlockIndex* pindex, CValidationState& state);
+bool ProcessSpecialTxsInBlock(const CBlock& block, const CBlockIndex* pindex, CValidationState& state, bool fJustCheck, bool fCheckCbTxMerleRoots);
 bool UndoSpecialTxsInBlock(const CBlock& block, const CBlockIndex* pindex);
 
 template <typename T>
@@ -49,4 +49,4 @@ void SetTxPayload(CMutableTransaction& tx, const T& payload)
 
 uint256 CalcTxInputsHash(const CTransaction& tx);
 
-#endif //E4COIN_SPECIALTX_H
+#endif //E4CN_SPECIALTX_H

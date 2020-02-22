@@ -1,9 +1,9 @@
-// Copyright (c) 2018 The e4Coin Core developers
+// Copyright (c) 2018 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_EVODB_H
-#define E4COIN_EVODB_H
+#ifndef E4CN_EVODB_H
+#define E4CN_EVODB_H
 
 #include "dbwrapper.h"
 #include "sync.h"
@@ -16,44 +16,56 @@ class CEvoDB
 private:
     CCriticalSection cs;
     CDBWrapper db;
-    CDBTransaction dbTransaction;
+
+    typedef CDBTransaction<CDBWrapper, CDBBatch> RootTransaction;
+    typedef CDBTransaction<RootTransaction, RootTransaction> CurTransaction;
+    typedef CScopedDBTransaction<RootTransaction, RootTransaction> ScopedTransaction;
+
+    CDBBatch rootBatch;
+    RootTransaction rootDBTransaction;
+    CurTransaction curDBTransaction;
 
 public:
     CEvoDB(size_t nCacheSize, bool fMemory = false, bool fWipe = false);
 
-    std::unique_ptr<CScopedDBTransaction> BeginTransaction()
+    std::unique_ptr<ScopedTransaction> BeginTransaction()
     {
         LOCK(cs);
-        auto t = CScopedDBTransaction::Begin(dbTransaction);
+        auto t = ScopedTransaction::Begin(curDBTransaction);
         return t;
+    }
+
+    CurTransaction& GetCurTransaction()
+    {
+        return curDBTransaction;
     }
 
     template <typename K, typename V>
     bool Read(const K& key, V& value)
     {
         LOCK(cs);
-        return dbTransaction.Read(key, value);
+        return curDBTransaction.Read(key, value);
     }
 
     template <typename K, typename V>
     void Write(const K& key, const V& value)
     {
         LOCK(cs);
-        dbTransaction.Write(key, value);
+        curDBTransaction.Write(key, value);
     }
 
     template <typename K>
     bool Exists(const K& key)
     {
         LOCK(cs);
-        return dbTransaction.Exists(key);
+        return curDBTransaction.Exists(key);
     }
 
     template <typename K>
     void Erase(const K& key)
     {
         LOCK(cs);
-        dbTransaction.Erase(key);
+        curDBTransaction.Erase(key);
     }
 
     CDBWrapper& GetRawDB()
@@ -61,10 +73,17 @@ public:
         return db;
     }
 
+    size_t GetMemoryUsage()
+    {
+        return rootDBTransaction.GetMemoryUsage();
+    }
+
+    bool CommitRootTransaction();
+
     bool VerifyBestBlock(const uint256& hash);
     void WriteBestBlock(const uint256& hash);
 };
 
 extern CEvoDB* evoDb;
 
-#endif //E4COIN_EVODB_H
+#endif //E4CN_EVODB_H

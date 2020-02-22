@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 The e4Coin Core developers
+// Copyright (c) 2014-2018 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -57,9 +57,9 @@ BOOST_AUTO_TEST_CASE(bip39_vectors)
         key.SetMaster(&seed[0], 64);
         pubkey = key.Neuter();
 
-        Ce4coinExtKey b58key;
+        CBitcoinExtKey b58key;
         b58key.SetKey(key);
-        // printf("Ce4coinExtKey: %s\n", b58key.ToString().c_str());
+        // printf("CBitcoinExtKey: %s\n", b58key.ToString().c_str());
         BOOST_CHECK(b58key.ToString() == test[3].get_str());
     }
 }

@@ -1,10 +1,10 @@
 // Copyright (c) 2012 Pieter Wuille
-// Copyright (c) 2012-2015 The dash Core developers
+// Copyright (c) 2012-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_ADDRMAN_H
-#define E4COIN_ADDRMAN_H
+#ifndef BITCOIN_ADDRMAN_H
+#define BITCOIN_ADDRMAN_H
 
 #include "netaddress.h"
 #include "protocol.h"
@@ -264,6 +264,9 @@ protected:
 
     //! Update an entry's service bits.
     void SetServices_(const CService &addr, ServiceFlags nServices);
+
+    //! Get address info for address
+    CAddrInfo GetAddressInfo_(const CService& addr);
 
 public:
     /**
@@ -593,6 +596,18 @@ public:
         Check();
     }
 
+    CAddrInfo GetAddressInfo(const CService& addr)
+    {
+        CAddrInfo addrRet;
+        {
+            LOCK(cs);
+            Check();
+            addrRet = GetAddressInfo_(addr);
+            Check();
+        }
+        return addrRet;
+    }
+
 };
 
-#endif // E4COIN_ADDRMAN_H
+#endif // BITCOIN_ADDRMAN_H

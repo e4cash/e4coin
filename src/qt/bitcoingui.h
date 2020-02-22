@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2015 The dash Core developers
+// Copyright (c) 2011-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_QT_E4COINGUI_H
-#define E4COIN_QT_E4COINGUI_H
+#ifndef BITCOIN_QT_BITCOINGUI_H
+#define BITCOIN_QT_BITCOINGUI_H
 
 #if defined(HAVE_CONFIG_H)
 #include "config/e4coin-config.h"
@@ -31,7 +31,6 @@ class WalletFrame;
 class WalletModel;
 class HelpMessageDialog;
 class ModalOverlay;
-class MasternodeList;
 
 class CWallet;
 
@@ -42,10 +41,10 @@ class QProgressDialog;
 QT_END_NAMESPACE
 
 /**
-  e4coin GUI main class. This class represents the main window of the e4coin UI. It communicates with both the client and
+  Bitcoin GUI main class. This class represents the main window of the Bitcoin UI. It communicates with both the client and
   wallet models to give the user an up-to-date view of the current core state.
 */
-class e4coinGUI : public QMainWindow
+class BitcoinGUI : public QMainWindow
 {
     Q_OBJECT
 
@@ -53,8 +52,8 @@ public:
     static const QString DEFAULT_WALLET;
     static const std::string DEFAULT_UIPLATFORM;
 
-    explicit e4coinGUI(const PlatformStyle *platformStyle, const NetworkStyle *networkStyle, QWidget *parent = 0);
-    ~e4coinGUI();
+    explicit BitcoinGUI(const PlatformStyle *platformStyle, const NetworkStyle *networkStyle, QWidget *parent = 0);
+    ~BitcoinGUI();
 
     /** Set the client model.
         The client model represents the part of the core that communicates with the P2P network, and is wallet-agnostic.
@@ -121,7 +120,6 @@ private:
     QAction *openPeersAction;
     QAction *openRepairAction;
     QAction *openConfEditorAction;
-    QAction *openMNConfEditorAction;
     QAction *showBackupsAction;
     QAction *openAction;
     QAction *showHelpMessageAction;
@@ -248,8 +246,6 @@ private Q_SLOTS:
 
     /** Open external (default) editor with e4coin.conf */
     void showConfEditor();
-    /** Open external (default) editor with masternode.conf */
-    void showMNConfEditor();
     /** Show folder with wallet backups in default file browser */
     void showBackups();
 
@@ -311,4 +307,4 @@ private Q_SLOTS:
     void onMenuSelection(QAction* action);
 };
 
-#endif // E4COIN_QT_E4COINGUI_H
+#endif // BITCOIN_QT_BITCOINGUI_H

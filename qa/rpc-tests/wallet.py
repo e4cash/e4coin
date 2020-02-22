@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2016 The dash Core developers
+# Copyright (c) 2014-2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
-
-from test_framework.test_framework import e4coinTestFramework
+"""Test the wallet."""
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import *
 
-class WalletTest (e4coinTestFramework):
+class WalletTest (BitcoinTestFramework):
 
     def check_fee_amount(self, curr_balance, balance_with_fee, fee_per_byte, tx_size):
         """Return curr_balance after asserting the fee was in range"""
@@ -35,7 +35,7 @@ class WalletTest (e4coinTestFramework):
         assert_equal(len(self.nodes[1].listunspent()), 0)
         assert_equal(len(self.nodes[2].listunspent()), 0)
 
-        print("Mining blocks...")
+        self.log.info("Mining blocks...")
 
         self.nodes[0].generate(1)
 
@@ -56,7 +56,7 @@ class WalletTest (e4coinTestFramework):
         assert_equal(len(self.nodes[1].listunspent()), 1)
         assert_equal(len(self.nodes[2].listunspent()), 0)
 
-        # Send 210 E4COIN from 0 to 2 using sendtoaddress call.
+        # Send 210 E4CN from 0 to 2 using sendtoaddress call.
         # Second transaction will be child of first, and will require a fee
         self.nodes[0].sendtoaddress(self.nodes[2].getnewaddress(), 110)
         self.nodes[0].sendtoaddress(self.nodes[2].getnewaddress(), 100)
@@ -81,7 +81,7 @@ class WalletTest (e4coinTestFramework):
         self.nodes[1].generate(100)
         self.sync_all()
 
-        # node0 should end up with 1000 E4COIN in block rewards plus fees, but
+        # node0 should end up with 1000 E4CN in block rewards plus fees, but
         # minus the 210 plus fees sent to node2
         assert_equal(self.nodes[0].getbalance(), 1000-210)
         assert_equal(self.nodes[2].getbalance(), 210)
@@ -92,39 +92,42 @@ class WalletTest (e4coinTestFramework):
         node0utxos = self.nodes[0].listunspent(1)
         assert_equal(len(node0utxos), 2)
 
+        fee_per_input = Decimal('0.00001')
+        totalfee = 0
         # create both transactions
         txns_to_send = []
         for utxo in node0utxos:
             inputs = []
             outputs = {}
             inputs.append({ "txid" : utxo["txid"], "vout" : utxo["vout"]})
-            outputs[self.nodes[2].getnewaddress("from1")] = utxo["amount"]
+            outputs[self.nodes[2].getnewaddress("from1")] = utxo["amount"] - fee_per_input
             raw_tx = self.nodes[0].createrawtransaction(inputs, outputs)
             txns_to_send.append(self.nodes[0].signrawtransaction(raw_tx))
+            totalfee += fee_per_input
 
         # Have node 1 (miner) send the transactions
-        self.nodes[1].sendrawtransaction(txns_to_send[0]["hex"], True, False, True)
-        self.nodes[1].sendrawtransaction(txns_to_send[1]["hex"], True, False, True)
+        self.nodes[1].sendrawtransaction(txns_to_send[0]["hex"])
+        self.nodes[1].sendrawtransaction(txns_to_send[1]["hex"])
 
         # Have node1 mine a block to confirm transactions:
         self.nodes[1].generate(1)
         self.sync_all()
 
         assert_equal(self.nodes[0].getbalance(), 0)
-        assert_equal(self.nodes[2].getbalance(), 1000)
-        assert_equal(self.nodes[2].getbalance("from1"), 1000-210)
+        assert_equal(self.nodes[2].getbalance(), 1000 - totalfee)
+        assert_equal(self.nodes[2].getbalance("from1"), 1000 - 210 - totalfee)
 
-        # Send 100 E4COIN normal
+        # Send 100 E4CN normal
         address = self.nodes[0].getnewaddress("test")
         fee_per_byte = Decimal('0.00001') / 1000
         self.nodes[2].settxfee(fee_per_byte * 1000)
         txid = self.nodes[2].sendtoaddress(address, 100, "", "", False)
         self.nodes[2].generate(1)
         self.sync_all()
-        node_2_bal = self.check_fee_amount(self.nodes[2].getbalance(), Decimal('900'), fee_per_byte, count_bytes(self.nodes[2].getrawtransaction(txid)))
+        node_2_bal = self.check_fee_amount(self.nodes[2].getbalance(), Decimal('900') - totalfee, fee_per_byte, count_bytes(self.nodes[2].getrawtransaction(txid)))
         assert_equal(self.nodes[0].getbalance(), Decimal('100'))
 
-        # Send 100 E4COIN with subtract fee from amount
+        # Send 100 E4CN with subtract fee from amount
         txid = self.nodes[2].sendtoaddress(address, 100, "", "", True)
         self.nodes[2].generate(1)
         self.sync_all()
@@ -132,7 +135,7 @@ class WalletTest (e4coinTestFramework):
         assert_equal(self.nodes[2].getbalance(), node_2_bal)
         node_0_bal = self.check_fee_amount(self.nodes[0].getbalance(), Decimal('200'), fee_per_byte, count_bytes(self.nodes[2].getrawtransaction(txid)))
 
-        # Sendmany 100 E4COIN
+        # Sendmany 100 E4CN
         txid = self.nodes[2].sendmany('from1', {address: 100}, 0, False, "", [])
         self.nodes[2].generate(1)
         self.sync_all()
@@ -140,7 +143,7 @@ class WalletTest (e4coinTestFramework):
         node_2_bal = self.check_fee_amount(self.nodes[2].getbalance(), node_2_bal - Decimal('100'), fee_per_byte, count_bytes(self.nodes[2].getrawtransaction(txid)))
         assert_equal(self.nodes[0].getbalance(), node_0_bal)
 
-        # Sendmany 100 E4COIN with subtract fee from amount
+        # Sendmany 100 E4CN with subtract fee from amount
         txid = self.nodes[2].sendmany('from1', {address: 100}, 0, False, "", [address])
         self.nodes[2].generate(1)
         self.sync_all()
@@ -333,7 +336,7 @@ class WalletTest (e4coinTestFramework):
         ]
         chainlimit = 6
         for m in maintenance:
-            print("check " + m)
+            self.log.info("check " + m)
             stop_nodes(self.nodes)
             # set lower ancestor limit for later
             self.nodes = start_nodes(3, self.options.tmpdir, [[m, "-limitancestorcount="+str(chainlimit)]] * 3)

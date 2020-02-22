@@ -1,5 +1,5 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The dash Core developers
+// Copyright (c) 2009-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -149,7 +149,7 @@ bool CAlert::Sign()
     CDataStream sMsg(SER_NETWORK, CLIENT_VERSION);
     sMsg << *(CUnsignedAlert*)this;
     vchMsg = std::vector<unsigned char>(sMsg.begin(), sMsg.end());
-    Ce4coinSecret vchSecret;
+    CBitcoinSecret vchSecret;
     if (!vchSecret.SetString(GetArg("-alertkey", "")))
     {
         printf("CAlert::SignAlert() : vchSecret.SetString failed\n");

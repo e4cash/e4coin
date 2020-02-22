@@ -1,9 +1,9 @@
-// Copyright (c) 2014 The dash Core developers
+// Copyright (c) 2014 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_CRYPTO_HMAC_SHA512_H
-#define E4COIN_CRYPTO_HMAC_SHA512_H
+#ifndef BITCOIN_CRYPTO_HMAC_SHA512_H
+#define BITCOIN_CRYPTO_HMAC_SHA512_H
 
 #include "crypto/sha512.h"
 
@@ -29,4 +29,4 @@ public:
     void Finalize(unsigned char hash[OUTPUT_SIZE]);
 };
 
-#endif // E4COIN_CRYPTO_HMAC_SHA512_H
+#endif // BITCOIN_CRYPTO_HMAC_SHA512_H

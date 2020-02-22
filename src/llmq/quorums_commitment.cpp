@@ -1,4 +1,4 @@
-// Copyright (c) 2018 The e4Coin Core developers
+// Copyright (c) 2018 The Dash Core developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -88,7 +88,7 @@ bool CFinalCommitment::Verify(const std::vector<CDeterministicMNCPtr>& members, 
             if (!signers[i]) {
                 continue;
             }
-            memberPubKeys.emplace_back(members[i]->pdmnState->pubKeyOperator);
+            memberPubKeys.emplace_back(members[i]->pdmnState->pubKeyOperator.Get());
         }
 
         if (!membersSig.VerifySecureAggregated(memberPubKeys, commitmentHash)) {

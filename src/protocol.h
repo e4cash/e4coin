@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The dash Core developers
+// Copyright (c) 2009-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -7,8 +7,8 @@
 #error This header can only be compiled as C++.
 #endif
 
-#ifndef E4COIN_PROTOCOL_H
-#define E4COIN_PROTOCOL_H
+#ifndef BITCOIN_PROTOCOL_H
+#define BITCOIN_PROTOCOL_H
 
 #include "netaddress.h"
 #include "serialize.h"
@@ -63,7 +63,7 @@ public:
 };
 
 /**
- * e4coin protocol message types. When adding new message types, don't forget
+ * Bitcoin protocol message types. When adding new message types, don't forget
  * to update allNetMessageTypes in protocol.cpp.
  */
 namespace NetMsgType {
@@ -250,10 +250,6 @@ extern const char *TXLOCKREQUEST;
 extern const char *TXLOCKVOTE;
 extern const char *SPORK;
 extern const char *GETSPORKS;
-extern const char *MASTERNODEPAYMENTVOTE;
-extern const char *MASTERNODEPAYMENTSYNC;
-extern const char *MNANNOUNCE;
-extern const char *MNPING;
 extern const char *DSACCEPT;
 extern const char *DSVIN;
 extern const char *DSFINALTX;
@@ -262,17 +258,28 @@ extern const char *DSCOMPLETE;
 extern const char *DSSTATUSUPDATE;
 extern const char *DSTX;
 extern const char *DSQUEUE;
-extern const char *DSEG;
+extern const char *SENDDSQUEUE;
 extern const char *SYNCSTATUSCOUNT;
 extern const char *MNGOVERNANCESYNC;
 extern const char *MNGOVERNANCEOBJECT;
 extern const char *MNGOVERNANCEOBJECTVOTE;
-extern const char *MNVERIFY;
 extern const char *GETMNLISTDIFF;
 extern const char *MNLISTDIFF;
+extern const char *QSENDRECSIGS;
 extern const char *QFCOMMITMENT;
-extern const char *QDCOMMITMENT;
 extern const char *QCONTRIB;
+extern const char *QCOMPLAINT;
+extern const char *QJUSTIFICATION;
+extern const char *QPCOMMITMENT;
+extern const char *QWATCH;
+extern const char *QSIGSESANN;
+extern const char *QSIGSHARESINV;
+extern const char *QGETSIGSHARES;
+extern const char *QBSIGSHARES;
+extern const char *QSIGREC;
+extern const char *CLSIG;
+extern const char *ISLOCK;
+extern const char *MNAUTH;
 };
 
 /* Get a vector of all valid message types (see above) */
@@ -287,7 +294,7 @@ enum ServiceFlags : uint64_t {
     // network services but don't provide them.
     NODE_NETWORK = (1 << 0),
     // NODE_GETUTXO means the node is capable of responding to the getutxo protocol request.
-    // e4Coin Core does not support this but a patch set called e4coin XT does.
+    // e4Coin Core does not support this but a patch set called Bitcoin XT does.
     // See BIP 64 for details on how this is implemented.
     NODE_GETUTXO = (1 << 1),
     // NODE_BLOOM means the node is capable and willing to handle bloom-filtered connections.
@@ -358,25 +365,24 @@ enum GetDataMsg {
     MSG_TXLOCK_REQUEST = 4,
     MSG_TXLOCK_VOTE = 5,
     MSG_SPORK = 6,
-    MSG_MASTERNODE_PAYMENT_VOTE = 7,
-    MSG_MASTERNODE_PAYMENT_BLOCK = 8, // reusing, was MSG_MASTERNODE_SCANNING_ERROR previousely, was NOT used in 12.0
-    MSG_BUDGET_VOTE = 9, // deprecated since 12.1
-    MSG_BUDGET_PROPOSAL = 10, // deprecated since 12.1
-    MSG_BUDGET_FINALIZED = 11, // deprecated since 12.1
-    MSG_BUDGET_FINALIZED_VOTE = 12, // deprecated since 12.1
-    MSG_MASTERNODE_QUORUM = 13, // not implemented
-    MSG_MASTERNODE_ANNOUNCE = 14,
-    MSG_MASTERNODE_PING = 15,
+    /* 7 - 15 were used in old e4Coin versions and were mainly budget and MN broadcast/ping related*/
     MSG_DSTX = 16,
     MSG_GOVERNANCE_OBJECT = 17,
     MSG_GOVERNANCE_OBJECT_VOTE = 18,
-    MSG_MASTERNODE_VERIFY = 19,
+    /* 19 was used for MSG_MASTERNODE_VERIFY and is not supported anymore */
     // Nodes may always request a MSG_CMPCT_BLOCK in a getdata, however,
     // MSG_CMPCT_BLOCK should not appear in any invs except as a part of getdata.
     MSG_CMPCT_BLOCK = 20, //!< Defined in BIP152
     MSG_QUORUM_FINAL_COMMITMENT = 21,
-    MSG_QUORUM_DUMMY_COMMITMENT = 22, // only valid on testnet/devnet/regtest
-    MSG_QUORUM_DUMMY_CONTRIBUTION = 23, // not a valid contribution and only allowed on testnet/devnet/regtest. Will later be replaced with the real contribution
+    /* MSG_QUORUM_DUMMY_COMMITMENT = 22, */ // was shortly used on testnet/devnet/regtest
+    MSG_QUORUM_CONTRIB = 23,
+    MSG_QUORUM_COMPLAINT = 24,
+    MSG_QUORUM_JUSTIFICATION = 25,
+    MSG_QUORUM_PREMATURE_COMMITMENT = 26,
+    /* MSG_QUORUM_DEBUG_STATUS = 27, */ // was shortly used on testnet/devnet/regtest
+    MSG_QUORUM_RECOVERED_SIG = 28,
+    MSG_CLSIG = 29,
+    MSG_ISLOCK = 30,
 };
 
 /** inv message data */
@@ -409,4 +415,4 @@ public:
 };
 
 
-#endif // E4COIN_PROTOCOL_H
+#endif // BITCOIN_PROTOCOL_H

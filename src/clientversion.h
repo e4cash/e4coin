@@ -1,9 +1,9 @@
-// Copyright (c) 2009-2015 The dash Core developers
+// Copyright (c) 2009-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_CLIENTVERSION_H
-#define E4COIN_CLIENTVERSION_H
+#ifndef BITCOIN_CLIENTVERSION_H
+#define BITCOIN_CLIENTVERSION_H
 
 #if defined(HAVE_CONFIG_H)
 #include "config/e4coin-config.h"
@@ -15,9 +15,9 @@
 
 //! These need to be macros, as clientversion.cpp's and e4coin*-res.rc's voodoo requires it
 #define CLIENT_VERSION_MAJOR 0
-#define CLIENT_VERSION_MINOR 3
-#define CLIENT_VERSION_REVISION 1
-#define CLIENT_VERSION_BUILD 0
+#define CLIENT_VERSION_MINOR 14
+#define CLIENT_VERSION_REVISION 0
+#define CLIENT_VERSION_BUILD 2
 
 //! Set to true for release, false for prerelease or test build
 #define CLIENT_VERSION_IS_RELEASE true
@@ -38,7 +38,7 @@
 #define DO_STRINGIZE(X) #X
 
 //! Copyright string used in Windows .rc files
-#define COPYRIGHT_STR "2017-" STRINGIZE(COPYRIGHT_YEAR) " The e4Coin Team Developers, 2018-" STRINGIZE(COPYRIGHT_YEAR) " " COPYRIGHT_HOLDERS_FINAL
+#define COPYRIGHT_STR "2009-" STRINGIZE(COPYRIGHT_YEAR) " The Bitcoin Core Developers, 2014-" STRINGIZE(COPYRIGHT_YEAR) " " COPYRIGHT_HOLDERS_FINAL
 
 /**
  * e4coind-res.rc includes this file, but it cannot cope with real c++ code.
@@ -57,7 +57,7 @@ static const int CLIENT_VERSION =
                          +     100 * CLIENT_VERSION_REVISION
                          +       1 * CLIENT_VERSION_BUILD;
 
-extern const std::string ;
+extern const std::string CLIENT_NAME;
 extern const std::string CLIENT_BUILD;
 
 std::string FormatVersion(int nVersion);
@@ -66,4 +66,4 @@ std::string FormatSubVersion(const std::string& name, int nClientVersion, const 
 
 #endif // WINDRES_PREPROC
 
-#endif // E4COIN_CLIENTVERSION_H
+#endif // BITCOIN_CLIENTVERSION_H

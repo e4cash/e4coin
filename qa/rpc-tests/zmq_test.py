@@ -1,18 +1,15 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2016 The dash Core developers
+# Copyright (c) 2015-2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
+"""Test the ZMQ API."""
 
-#
-# Test ZMQ interface
-#
-
-from test_framework.test_framework import e4coinTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import *
 import zmq
 import struct
 
-class ZMQTest (e4coinTestFramework):
+class ZMQTest (BitcoinTestFramework):
 
     def __init__(self):
         super().__init__()
@@ -39,7 +36,7 @@ class ZMQTest (e4coinTestFramework):
         genhashes = self.nodes[0].generate(1)
         self.sync_all()
 
-        print("listen...")
+        self.log.info("listen...")
         msg = self.zmqSubSocket.recv_multipart()
         topic = msg[0]
         assert_equal(topic, b"hashtx")

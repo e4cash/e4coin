@@ -1,19 +1,25 @@
-// Copyright (c) 2017-2018 The e4Coin Core developers
+// Copyright (c) 2017-2018 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_SIMPLIFIEDMNS_H
-#define E4COIN_SIMPLIFIEDMNS_H
+#ifndef E4CN_SIMPLIFIEDMNS_H
+#define E4CN_SIMPLIFIEDMNS_H
 
 #include "bls/bls.h"
 #include "merkleblock.h"
 #include "netaddress.h"
 #include "pubkey.h"
 #include "serialize.h"
+#include "version.h"
 
 class UniValue;
 class CDeterministicMNList;
 class CDeterministicMN;
+
+namespace llmq
+{
+    class CFinalCommitment;
+}
 
 class CSimplifiedMNListEntry
 {
@@ -21,7 +27,7 @@ public:
     uint256 proRegTxHash;
     uint256 confirmedHash;
     CService service;
-    CBLSPublicKey pubKeyOperator;
+    CBLSLazyPublicKey pubKeyOperator;
     CKeyID keyIDVoting;
     bool isValid;
 
@@ -68,7 +74,7 @@ public:
 class CSimplifiedMNList
 {
 public:
-    std::vector<CSimplifiedMNListEntry> mnList;
+    std::vector<std::unique_ptr<CSimplifiedMNListEntry>> mnList;
 
 public:
     CSimplifiedMNList() {}
@@ -107,6 +113,10 @@ public:
     std::vector<uint256> deletedMNs;
     std::vector<CSimplifiedMNListEntry> mnList;
 
+    // starting with proto version LLMQS_PROTO_VERSION, we also transfer changes in active quorums
+    std::vector<std::pair<uint8_t, uint256>> deletedQuorums; // p<LLMQType, quorumHash>
+    std::vector<llmq::CFinalCommitment> newQuorums;
+
 public:
     ADD_SERIALIZE_METHODS;
 
@@ -119,12 +129,22 @@ public:
         READWRITE(cbTx);
         READWRITE(deletedMNs);
         READWRITE(mnList);
+
+        if (s.GetVersion() >= LLMQS_PROTO_VERSION) {
+            READWRITE(deletedQuorums);
+            READWRITE(newQuorums);
+        }
     }
 
 public:
+    CSimplifiedMNListDiff();
+    ~CSimplifiedMNListDiff();
+
+    bool BuildQuorumsDiff(const CBlockIndex* baseBlockIndex, const CBlockIndex* blockIndex);
+
     void ToJson(UniValue& obj) const;
 };
 
 bool BuildSimplifiedMNListDiff(const uint256& baseBlockHash, const uint256& blockHash, CSimplifiedMNListDiff& mnListDiffRet, std::string& errorRet);
 
-#endif //E4COIN_SIMPLIFIEDMNS_H
+#endif //E4CN_SIMPLIFIEDMNS_H

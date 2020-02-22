@@ -1,9 +1,9 @@
-// Copyright (c) 2018 The e4Coin Core developers
+// Copyright (c) 2018 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_PROVIDERTX_H
-#define E4COIN_PROVIDERTX_H
+#ifndef E4CN_PROVIDERTX_H
+#define E4CN_PROVIDERTX_H
 
 #include "bls/bls.h"
 #include "consensus/validation.h"
@@ -183,4 +183,4 @@ bool CheckProUpServTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CVa
 bool CheckProUpRegTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValidationState& state);
 bool CheckProUpRevTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValidationState& state);
 
-#endif //E4COIN_PROVIDERTX_H
+#endif //E4CN_PROVIDERTX_H

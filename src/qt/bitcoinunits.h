@@ -1,10 +1,10 @@
-// Copyright (c) 2011-2015 The dash Core developers
-// Copyright (c) 2014-2017 The e4Coin Core developers
+// Copyright (c) 2011-2015 The Bitcoin Core developers
+// Copyright (c) 2014-2016 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_QT_E4COINUNITS_H
-#define E4COIN_QT_E4COINUNITS_H
+#ifndef BITCOIN_QT_BITCOINUNITS_H
+#define BITCOIN_QT_BITCOINUNITS_H
 
 #include "amount.h"
 
@@ -45,22 +45,22 @@
 /** e4Coin unit definitions. Encapsulates parsing and formatting
    and serves as list model for drop-down selection boxes.
 */
-class e4coinUnits: public QAbstractListModel
+class BitcoinUnits: public QAbstractListModel
 {
     Q_OBJECT
 
 public:
-    explicit e4coinUnits(QObject *parent);
+    explicit BitcoinUnits(QObject *parent);
 
     /** e4Coin units.
       @note Source: https://en.bitcoin.it/wiki/Units . Please add only sensible ones
      */
     enum Unit
     {
-        E4COIN,
-        mE4COIN,
-        uE4COIN,
-        duffs
+        E4CN,
+        mE4CN,
+        uE4CN,
+        real
     };
 
     enum SeparatorStyle
@@ -127,8 +127,8 @@ public:
     static CAmount maxMoney();
 
 private:
-    QList<e4coinUnits::Unit> unitlist;
+    QList<BitcoinUnits::Unit> unitlist;
 };
-typedef e4coinUnits::Unit e4coinUnit;
+typedef BitcoinUnits::Unit BitcoinUnit;
 
-#endif // E4COIN_QT_E4COINUNITS_H
+#endif // BITCOIN_QT_BITCOINUNITS_H

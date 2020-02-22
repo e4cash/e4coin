@@ -1,7 +1,7 @@
-// Copyright (c) 2014-2017 The e4Coin Core developers
+// Copyright (c) 2014-2018 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
-#ifndef E4COIN_HDCHAIN_H
-#define E4COIN_HDCHAIN_H
+#ifndef E4CN_HDCHAIN_H
+#define E4CN_HDCHAIN_H
 
 #include "key.h"
 #include "sync.h"
@@ -147,4 +147,4 @@ public:
     std::string GetKeyPath() const;
 };
 
-#endif // E4COIN_HDCHAIN_H
+#endif // E4CN_HDCHAIN_H

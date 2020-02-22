@@ -1,9 +1,9 @@
-// Copyright (c) 2014-2018 The e4Coin Core developers
+// Copyright (c) 2014-2018 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_SUPPORT_ALLOCATORS_POOLED_SECURE_H
-#define E4COIN_SUPPORT_ALLOCATORS_POOLED_SECURE_H
+#ifndef BITCOIN_SUPPORT_ALLOCATORS_POOLED_SECURE_H
+#define BITCOIN_SUPPORT_ALLOCATORS_POOLED_SECURE_H
 
 #include "support/lockedpool.h"
 #include "support/cleanse.h"
@@ -70,4 +70,4 @@ private:
     boost::pool<internal_secure_allocator> pool;
 };
 
-#endif // E4COIN_SUPPORT_ALLOCATORS_POOLED_SECURE_H
+#endif // BITCOIN_SUPPORT_ALLOCATORS_POOLED_SECURE_H

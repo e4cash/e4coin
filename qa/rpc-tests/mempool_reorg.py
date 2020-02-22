@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2016 The dash Core developers
+# Copyright (c) 2014-2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
+"""Test mempool re-org scenarios.
 
-#
-# Test re-org scenarios with a mempool that contains transactions
-# that spend (directly or indirectly) coinbase transactions.
-#
+Test re-org scenarios with a mempool that contains transactions
+that spend (directly or indirectly) coinbase transactions.
+"""
 
-from test_framework.test_framework import e4coinTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import *
 
 # Create one-input, one-output, no-fee transaction:
-class MempoolCoinbaseTest(e4coinTestFramework):
+class MempoolCoinbaseTest(BitcoinTestFramework):
     def __init__(self):
         super().__init__()
         self.num_nodes = 2
@@ -21,7 +21,7 @@ class MempoolCoinbaseTest(e4coinTestFramework):
     alert_filename = None  # Set by setup_network
 
     def setup_network(self):
-        args = ["-checkmempool", "-debug=mempool"]
+        args = ["-checkmempool"]
         self.nodes = []
         self.nodes.append(start_node(0, self.options.tmpdir, args))
         self.nodes.append(start_node(1, self.options.tmpdir, args))

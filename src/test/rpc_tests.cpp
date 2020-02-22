@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 The dash Core developers
+// Copyright (c) 2012-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -232,7 +232,7 @@ BOOST_AUTO_TEST_CASE(json_parse_errors)
     // Invalid, trailing garbage
     BOOST_CHECK_THROW(ParseNonRFCJSONValue("1.0sds"), std::runtime_error);
     BOOST_CHECK_THROW(ParseNonRFCJSONValue("1.0]"), std::runtime_error);
-    // E4C addresses should fail parsing
+    // BTC addresses should fail parsing
     BOOST_CHECK_THROW(ParseNonRFCJSONValue("175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W"), std::runtime_error);
     BOOST_CHECK_THROW(ParseNonRFCJSONValue("3J98t1WpEZ73CNmQviecrnyiWrnqRhWNL"), std::runtime_error);
 }
@@ -320,6 +320,7 @@ BOOST_AUTO_TEST_CASE(rpc_ban)
     BOOST_CHECK_EQUAL(adr.get_str(), "2001:4d48:ac57:400:cacf:e9ff:fe1d:9c63/128");
 }
 
+#if ENABLE_MINER
 BOOST_AUTO_TEST_CASE(rpc_convert_values_generatetoaddress)
 {
     UniValue result;
@@ -342,12 +343,6 @@ BOOST_AUTO_TEST_CASE(rpc_convert_values_generatetoaddress)
     BOOST_CHECK_EQUAL(result[1].get_str(), "yTG8jLL3MvteKXgbEcHyaN7JvTPCejQpSh");
     BOOST_CHECK_EQUAL(result[2].get_int(), 9);
 }
-
-BOOST_AUTO_TEST_CASE(rpc_sentinel_ping)
-{
-    BOOST_CHECK_NO_THROW(CallRPC("sentinelping 1.0.2"));
-    BOOST_CHECK_THROW(CallRPC("sentinelping"), std::runtime_error);
-    BOOST_CHECK_THROW(CallRPC("sentinelping 2"), std::bad_cast);
-}
+#endif // ENABLE_MINER
 
 BOOST_AUTO_TEST_SUITE_END()

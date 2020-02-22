@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2018 The e4Coin Core developers
+// Copyright (c) 2014-2018 The Dash Core developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -73,10 +73,7 @@ public:
     std::vector<CGovernanceVote> GetVotes() const;
 
     void RemoveVotesFromMasternode(const COutPoint& outpointMasternode);
-    std::set<uint256> RemoveInvalidProposalVotes(const COutPoint& outpointMasternode);
-
-    // TODO can be removed after full DIP3 deployment
-    std::vector<uint256> RemoveOldVotes(unsigned int nMinTime);
+    std::set<uint256> RemoveInvalidVotes(const COutPoint& outpointMasternode, bool fProposal);
 
     ADD_SERIALIZE_METHODS;
 
@@ -91,6 +88,9 @@ public:
     }
 
 private:
+    // Drop older votes for the same gobject from the same masternode
+    void RemoveOldVotes(const CGovernanceVote& vote);
+
     void RebuildIndex();
 };
 

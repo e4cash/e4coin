@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The dash Core developers
+// Copyright (c) 2009-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -90,7 +90,8 @@ public:
 static CSignatureCache signatureCache;
 }
 
-// To be called once in AppInit2/TestingSetup to initialize the signatureCache
+// To be called once in AppInitMain/BasicTestingSetup to initialize the
+// signatureCache.
 void InitSignatureCache()
 {
     // nMaxCacheSize is unsigned. If -maxsigcachesize is set to zero,

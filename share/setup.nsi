@@ -5,16 +5,16 @@ SetCompressor /SOLID lzma
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
-!define VERSION 0.13.1
+!define VERSION 1.0.0
 !define COMPANY "e4Coin Core project"
 !define URL https://e4coin.org/
 
 # MUI Symbol Definitions
-!define MUI_ICON "/Users/schmucke/Documents/Developer/cryptocurrency/tem-e4coin/e4coin-0.3.1.0/share/pixmaps/bitcoin.ico"
-!define MUI_WELCOMEFINISHPAGE_BITMAP "/Users/schmucke/Documents/Developer/cryptocurrency/tem-e4coin/e4coin-0.3.1.0/share/pixmaps/nsis-wizard.bmp"
+!define MUI_ICON "/tmp/e4Coin/share/pixmaps/bitcoin.ico"
+!define MUI_WELCOMEFINISHPAGE_BITMAP "/tmp/e4Coin/share/pixmaps/nsis-wizard.bmp"
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_RIGHT
-!define MUI_HEADERIMAGE_BITMAP "/Users/schmucke/Documents/Developer/cryptocurrency/tem-e4coin/e4coin-0.3.1.0/share/pixmaps/nsis-header.bmp"
+!define MUI_HEADERIMAGE_BITMAP "/tmp/e4Coin/share/pixmaps/nsis-header.bmp"
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT HKLM
 !define MUI_STARTMENUPAGE_REGISTRY_KEY ${REGKEY}
@@ -22,7 +22,7 @@ SetCompressor /SOLID lzma
 !define MUI_STARTMENUPAGE_DEFAULTFOLDER "e4Coin Core"
 !define MUI_FINISHPAGE_RUN $INSTDIR\e4coin-qt
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
-!define MUI_UNWELCOMEFINISHPAGE_BITMAP "/Users/schmucke/Documents/Developer/cryptocurrency/tem-e4coin/e4coin-0.3.1.0/share/pixmaps/nsis-wizard.bmp"
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "/tmp/e4Coin/share/pixmaps/nsis-wizard.bmp"
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 
 # Included files
@@ -48,7 +48,7 @@ Var StartMenuGroup
 !insertmacro MUI_LANGUAGE English
 
 # Installer attributes
-OutFile /Users/schmucke/Documents/Developer/cryptocurrency/tem-e4coin/e4coin-0.3.1.0/e4coincore-${VERSION}-win-setup.exe
+OutFile /tmp/e4Coin/e4coincore-${VERSION}-win-setup.exe
 !if "" == "64"
 InstallDir $PROGRAMFILES64\e4CoinCore
 !else
@@ -73,14 +73,14 @@ ShowUninstDetails show
 Section -Main SEC0000
     SetOutPath $INSTDIR
     SetOverwrite on
-    File /Users/schmucke/Documents/Developer/cryptocurrency/tem-e4coin/e4coin-0.3.1.0/release/e4coin-qt
-    File /oname=COPYING.txt /Users/schmucke/Documents/Developer/cryptocurrency/tem-e4coin/e4coin-0.3.1.0/COPYING
-    File /oname=readme.txt /Users/schmucke/Documents/Developer/cryptocurrency/tem-e4coin/e4coin-0.3.1.0/doc/README_windows.txt
+    File /tmp/e4Coin/release/e4coin-qt
+    File /oname=COPYING.txt /tmp/e4Coin/COPYING
+    File /oname=readme.txt /tmp/e4Coin/doc/README_windows.txt
     SetOutPath $INSTDIR\daemon
-    File /Users/schmucke/Documents/Developer/cryptocurrency/tem-e4coin/e4coin-0.3.1.0/release/e4coind
-    File /Users/schmucke/Documents/Developer/cryptocurrency/tem-e4coin/e4coin-0.3.1.0/release/e4coin-cli
+    File /tmp/e4Coin/release/e4coind
+    File /tmp/e4Coin/release/e4coin-cli
     SetOutPath $INSTDIR\doc
-    File /r /Users/schmucke/Documents/Developer/cryptocurrency/tem-e4coin/e4coin-0.3.1.0/doc\*.*
+    File /r /tmp/e4Coin/doc\*.*
     SetOutPath $INSTDIR
     WriteRegStr HKCU "${REGKEY}\Components" Main 1
 SectionEnd
@@ -107,10 +107,6 @@ Section -post SEC0001
     WriteRegStr HKCR "e4coincore" "" "URL:e4Coin"
     WriteRegStr HKCR "e4coincore\DefaultIcon" "" $INSTDIR\e4coin-qt
     WriteRegStr HKCR "e4coincore\shell\open\command" "" '"$INSTDIR\e4coin-qt" "%1"'
-
-    # Delete old key (before we switched to PACKAGE_TARNAME, which is set to 'e4coincore' now, we had 'e4coin' hardcoded)
-    # TODO remove this line sometime later
-    DeleteRegKey HKCR "e4coin"
 SectionEnd
 
 # Macro for selecting uninstaller sections
@@ -150,9 +146,6 @@ Section -un.post UNSEC0001
     DeleteRegKey /IfEmpty HKCU "${REGKEY}\Components"
     DeleteRegKey /IfEmpty HKCU "${REGKEY}"
     DeleteRegKey HKCR "e4coincore"
-    # Delete old key (before we switched to PACKAGE_TARNAME, which is set to 'e4coincore' now, we had 'e4coin' hardcoded)
-    # TODO remove this line sometime later
-    DeleteRegKey HKCR "e4coin"
     RmDir /REBOOTOK $SMPROGRAMS\$StartMenuGroup
     RmDir /REBOOTOK $INSTDIR
     Push $R0

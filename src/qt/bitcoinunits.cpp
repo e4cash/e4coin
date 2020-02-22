@@ -1,5 +1,5 @@
-// Copyright (c) 2011-2015 The dash Core developers
-// Copyright (c) 2014-2017 The e4Coin Core developers
+// Copyright (c) 2011-2015 The Bitcoin Core developers
+// Copyright (c) 2014-2016 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -10,46 +10,46 @@
 #include <QSettings>
 #include <QStringList>
 
-e4coinUnits::e4coinUnits(QObject *parent):
+BitcoinUnits::BitcoinUnits(QObject *parent):
         QAbstractListModel(parent),
         unitlist(availableUnits())
 {
 }
 
-QList<e4coinUnits::Unit> e4coinUnits::availableUnits()
+QList<BitcoinUnits::Unit> BitcoinUnits::availableUnits()
 {
-    QList<e4coinUnits::Unit> unitlist;
-    unitlist.append(E4C);
-    unitlist.append(mE4C);
-    unitlist.append(uE4C);
-    unitlist.append(puya);
+    QList<BitcoinUnits::Unit> unitlist;
+    unitlist.append(E4CN);
+    unitlist.append(mE4CN);
+    unitlist.append(uE4CN);
+    unitlist.append(real);
     return unitlist;
 }
 
-bool e4coinUnits::valid(int unit)
+bool BitcoinUnits::valid(int unit)
 {
     switch(unit)
     {
-    case E4C:
-    case mE4C:
-    case uE4C:
-    case puya:
+    case E4CN:
+    case mE4CN:
+    case uE4CN:
+    case real:
         return true;
     default:
         return false;
     }
 }
 
-QString e4coinUnits::name(int unit)
+QString BitcoinUnits::name(int unit)
 {
     if(Params().NetworkIDString() == CBaseChainParams::MAIN)
     {
         switch(unit)
         {
-            case E4C: return QString("E4C");
-            case mE4C: return QString("Real");
-            case uE4C: return QString::fromUtf8("Locha");
-            case puyas: return QString("Puyas");
+            case E4CN: return QString("E4CN");
+            case mE4CN: return QString("mE4CN");
+            case uE4CN: return QString::fromUtf8("μE4CN");
+            case real: return QString("real");
             default: return QString("???");
         }
     }
@@ -57,25 +57,25 @@ QString e4coinUnits::name(int unit)
     {
         switch(unit)
         {
-            case E4C: return QString("tE4C");
-            case mE4C: return QString("mtReal");
-            case uE4C: return QString::fromUtf8("μtLocha");
-            case puyas: return QString("tPuyas");
+            case E4CN: return QString("tE4CN");
+            case mE4CN: return QString("mtE4CN");
+            case uE4CN: return QString::fromUtf8("μtE4CN");
+            case real: return QString("treal");
             default: return QString("???");
         }
     }
 }
 
-QString e4coinUnits::description(int unit)
+QString BitcoinUnits::description(int unit)
 {
     if(Params().NetworkIDString() == CBaseChainParams::MAIN)
     {
         switch(unit)
         {
-            case E4C: return QString("e4Coin");
-            case mE4C: return QString("Milli-e4Coin (1 / 1" THIN_SP_UTF8 "000)");
-            case uE4C: return QString("Micro-e4Coin (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
-            case puyas: return QString("Ten Nano-e4Coin (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case E4CN: return QString("e4Coin");
+            case mE4CN: return QString("Milli-e4Coin (1 / 1" THIN_SP_UTF8 "000)");
+            case uE4CN: return QString("Micro-e4Coin (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case real: return QString("Ten Nano-e4Coin (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
             default: return QString("???");
         }
     }
@@ -83,40 +83,40 @@ QString e4coinUnits::description(int unit)
     {
         switch(unit)
         {
-            case E4C: return QString("Teste4Coins");
-            case mE4C: return QString("Milli-Teste4Coin (1 / 1" THIN_SP_UTF8 "000)");
-            case uE4C: return QString("Micro-Teste4Coin (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
-            case puyas: return QString("Ten Nano-Teste4Coin (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case E4CN: return QString("Teste4Coins");
+            case mE4CN: return QString("Milli-Teste4Coin (1 / 1" THIN_SP_UTF8 "000)");
+            case uE4CN: return QString("Micro-Teste4Coin (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case real: return QString("Ten Nano-Teste4Coin (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
             default: return QString("???");
         }
     }
 }
 
-qint64 e4coinUnits::factor(int unit)
+qint64 BitcoinUnits::factor(int unit)
 {
     switch(unit)
     {
-    case E4C:  return 100000000;
-    case mE4C: return 100000;
-    case uE4C: return 100;
-    case puyas: return 1;
+    case E4CN:  return 100000000;
+    case mE4CN: return 100000;
+    case uE4CN: return 100;
+    case real: return 1;
     default:   return 100000000;
     }
 }
 
-int e4coinUnits::decimals(int unit)
+int BitcoinUnits::decimals(int unit)
 {
     switch(unit)
     {
-    case E4C: return 8;
-    case mE4C: return 5;
-    case uE4C: return 2;
-    case puyas: return 0;
+    case E4CN: return 8;
+    case mE4CN: return 5;
+    case uE4CN: return 2;
+    case real: return 0;
     default: return 0;
     }
 }
 
-QString e4coinUnits::format(int unit, const CAmount& nIn, bool fPlus, SeparatorStyle separators)
+QString BitcoinUnits::format(int unit, const CAmount& nIn, bool fPlus, SeparatorStyle separators)
 {
     // Note: not using straight sprintf here because we do NOT want
     // localized number formatting.
@@ -159,19 +159,19 @@ QString e4coinUnits::format(int unit, const CAmount& nIn, bool fPlus, SeparatorS
 // Please take care to use formatHtmlWithUnit instead, when
 // appropriate.
 
-QString e4coinUnits::formatWithUnit(int unit, const CAmount& amount, bool plussign, SeparatorStyle separators)
+QString BitcoinUnits::formatWithUnit(int unit, const CAmount& amount, bool plussign, SeparatorStyle separators)
 {
     return format(unit, amount, plussign, separators) + QString(" ") + name(unit);
 }
 
-QString e4coinUnits::formatHtmlWithUnit(int unit, const CAmount& amount, bool plussign, SeparatorStyle separators)
+QString BitcoinUnits::formatHtmlWithUnit(int unit, const CAmount& amount, bool plussign, SeparatorStyle separators)
 {
     QString str(formatWithUnit(unit, amount, plussign, separators));
     str.replace(QChar(THIN_SP_CP), QString(THIN_SP_HTML));
     return QString("<span style='white-space: nowrap;'>%1</span>").arg(str);
 }
 
-QString e4coinUnits::floorWithUnit(int unit, const CAmount& amount, bool plussign, SeparatorStyle separators)
+QString BitcoinUnits::floorWithUnit(int unit, const CAmount& amount, bool plussign, SeparatorStyle separators)
 {
     QSettings settings;
     int digits = settings.value("digits").toInt();
@@ -182,14 +182,14 @@ QString e4coinUnits::floorWithUnit(int unit, const CAmount& amount, bool plussig
     return result + QString(" ") + name(unit);
 }
 
-QString e4coinUnits::floorHtmlWithUnit(int unit, const CAmount& amount, bool plussign, SeparatorStyle separators)
+QString BitcoinUnits::floorHtmlWithUnit(int unit, const CAmount& amount, bool plussign, SeparatorStyle separators)
 {
     QString str(floorWithUnit(unit, amount, plussign, separators));
     str.replace(QChar(THIN_SP_CP), QString(THIN_SP_HTML));
     return QString("<span style='white-space: nowrap;'>%1</span>").arg(str);
 }
 
-bool e4coinUnits::parse(int unit, const QString &value, CAmount *val_out)
+bool BitcoinUnits::parse(int unit, const QString &value, CAmount *val_out)
 {
     if(!valid(unit) || value.isEmpty())
         return false; // Refuse to parse invalid unit or empty string
@@ -228,23 +228,23 @@ bool e4coinUnits::parse(int unit, const QString &value, CAmount *val_out)
     return ok;
 }
 
-QString e4coinUnits::getAmountColumnTitle(int unit)
+QString BitcoinUnits::getAmountColumnTitle(int unit)
 {
     QString amountTitle = QObject::tr("Amount");
-    if (e4coinUnits::valid(unit))
+    if (BitcoinUnits::valid(unit))
     {
-        amountTitle += " ("+e4coinUnits::name(unit) + ")";
+        amountTitle += " ("+BitcoinUnits::name(unit) + ")";
     }
     return amountTitle;
 }
 
-int e4coinUnits::rowCount(const QModelIndex &parent) const
+int BitcoinUnits::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     return unitlist.size();
 }
 
-QVariant e4coinUnits::data(const QModelIndex &index, int role) const
+QVariant BitcoinUnits::data(const QModelIndex &index, int role) const
 {
     int row = index.row();
     if(row >= 0 && row < unitlist.size())
@@ -264,7 +264,7 @@ QVariant e4coinUnits::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-CAmount e4coinUnits::maxMoney()
+CAmount BitcoinUnits::maxMoney()
 {
     return MAX_MONEY;
 }

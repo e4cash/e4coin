@@ -1,4 +1,4 @@
-// Copyright (c) 2015 The dash Core developers
+// Copyright (c) 2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -91,6 +91,8 @@ bool benchmark::State::KeepRunning()
     if (now - beginTime < maxElapsed) return true; // Keep going
 
     --count;
+
+    assert(count != 0 && "count == 0 => (now == 0 && beginTime == 0) => return above");
 
     // Output results
     double average = (now-beginTime)/count;

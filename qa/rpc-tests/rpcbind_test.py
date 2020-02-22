@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2016 The dash Core developers
+# Copyright (c) 2014-2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
+"""Test running bitcoind with the -rpcbind and -rpcallowip options."""
 
-# Test for -rpcbind, as well as -rpcallowip and -rpcconnect
-
-from test_framework.test_framework import e4coinTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import *
 from test_framework.netutil import *
 
 
-class RPCBindTest(e4coinTestFramework):
+class RPCBindTest(BitcoinTestFramework):
 
     def __init__(self):
         super().__init__()
@@ -62,7 +61,7 @@ class RPCBindTest(e4coinTestFramework):
                 break
         if non_loopback_ip is None:
             assert(not 'This test requires at least one non-loopback IPv4 interface')
-        print("Using interface %s for testing" % non_loopback_ip)
+        self.log.info("Using interface %s for testing" % non_loopback_ip)
 
         defaultport = rpc_port(0)
 

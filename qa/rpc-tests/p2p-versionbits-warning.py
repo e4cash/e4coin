@@ -1,21 +1,19 @@
 #!/usr/bin/env python3
-# Copyright (c) 2016 The dash Core developers
+# Copyright (c) 2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
+"""Test version bits warning system.
+
+Generate chains with block versions that appear to be signalling unknown
+soft-forks, and test that warning alerts are generated.
+"""
 
 from test_framework.mininode import *
-from test_framework.test_framework import e4coinTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import *
 import re
 import time
 from test_framework.blocktools import create_block, create_coinbase
-
-'''
-Test version bits' warning system.
-
-Generate chains with block versions that appear to be signalling unknown
-soft-forks, and test that warning alerts are generated.
-'''
 
 VB_PERIOD = 144 # versionbits period length for regtest
 VB_THRESHOLD = 108 # versionbits activation threshold for regtest
@@ -63,7 +61,7 @@ class TestNode(NodeConnCB):
         return received_pong
 
 
-class VersionBitsWarningTest(e4coinTestFramework):
+class VersionBitsWarningTest(BitcoinTestFramework):
     def __init__(self):
         super().__init__()
         self.setup_clean_chain = True
@@ -74,7 +72,7 @@ class VersionBitsWarningTest(e4coinTestFramework):
         # Open and close to create zero-length file
         with open(self.alert_filename, 'w', encoding='utf8') as _:
             pass
-        self.extra_args = [["-debug", "-logtimemicros=1", "-alertnotify=echo %s >> \"" + self.alert_filename + "\""]]
+        self.extra_args = [["-alertnotify=echo %s >> \"" + self.alert_filename + "\""]]
         self.nodes = start_nodes(self.num_nodes, self.options.tmpdir, self.extra_args)
 
     # Send numblocks blocks via peer with nVersionToUse set.

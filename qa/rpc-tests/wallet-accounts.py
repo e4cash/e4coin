@@ -1,18 +1,24 @@
 #!/usr/bin/env python3
-# Copyright (c) 2016 The dash Core developers
+# Copyright (c) 2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
+"""Test account RPCs.
 
-from test_framework.test_framework import e4coinTestFramework
+RPCs tested are:
+    - getaccountaddress
+    - getaddressesbyaccount
+    - setaccount
+    - sendfrom (with account arguments)
+    - move (with account arguments)
+"""
+
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     start_nodes,
-    start_node,
     assert_equal,
-    connect_nodes_bi,
 )
 
-
-class WalletAccountsTest(e4coinTestFramework):
+class WalletAccountsTest(BitcoinTestFramework):
 
     def __init__(self):
         super().__init__()

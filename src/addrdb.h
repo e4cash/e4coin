@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The dash Core developers
+// Copyright (c) 2009-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_ADDRDB_H
-#define E4COIN_ADDRDB_H
+#ifndef BITCOIN_ADDRDB_H
+#define BITCOIN_ADDRDB_H
 
 #include "serialize.h"
 
@@ -99,4 +99,4 @@ public:
     bool Read(banmap_t& banSet);
 };
 
-#endif // E4COIN_ADDRDB_H
+#endif // BITCOIN_ADDRDB_H

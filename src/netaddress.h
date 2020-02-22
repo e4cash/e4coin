@@ -1,9 +1,9 @@
-// Copyright (c) 2009-2015 The dash Core developers
+// Copyright (c) 2009-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_NETADDRESS_H
-#define E4COIN_NETADDRESS_H
+#ifndef BITCOIN_NETADDRESS_H
+#define BITCOIN_NETADDRESS_H
 
 #if defined(HAVE_CONFIG_H)
 #include "config/e4coin-config.h"
@@ -170,4 +170,4 @@ class CService : public CNetAddr
         }
 };
 
-#endif // E4COIN_NETADDRESS_H
+#endif // BITCOIN_NETADDRESS_H

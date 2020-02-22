@@ -1,5 +1,5 @@
 // Copyright (c) 2012 Pieter Wuille
-// Copyright (c) 2012-2015 The dash Core developers
+// Copyright (c) 2012-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -531,6 +531,23 @@ void CAddrMan::SetServices_(const CService& addr, ServiceFlags nServices)
 
     // update info
     info.nServices = nServices;
+}
+
+CAddrInfo CAddrMan::GetAddressInfo_(const CService& addr)
+{
+    CAddrInfo* pinfo = Find(addr);
+
+    // if not found, bail out
+    if (!pinfo)
+        return CAddrInfo();
+
+    CAddrInfo& info = *pinfo;
+
+    // check whether we are talking about the exact same CService (including same port)
+    if (info != addr)
+        return CAddrInfo();
+
+    return *pinfo;
 }
 
 int CAddrMan::RandomInt(int nMax){

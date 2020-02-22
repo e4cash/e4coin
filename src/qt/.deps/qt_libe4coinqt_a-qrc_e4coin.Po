@@ -1,0 +1,4 @@
+qt/qt_libe4coinqt_a-qrc_e4coin.o: qt/qrc_e4coin.cpp \
+ /usr/include/stdc-predef.h
+
+/usr/include/stdc-predef.h:

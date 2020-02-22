@@ -1,4 +1,4 @@
-// Copyright (c) 2018 The e4Coin Core developers
+// Copyright (c) 2018-2019 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -137,7 +137,7 @@ bool CheckProRegTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValid
 
     if (!ptx.collateralOutpoint.hash.IsNull()) {
         Coin coin;
-        if (!GetUTXOCoin(ptx.collateralOutpoint, coin) || coin.out.nValue != 1000 * COIN) {
+        if (!GetUTXOCoin(ptx.collateralOutpoint, coin) || coin.out.nValue != 10000 * COIN) {
             return state.DoS(10, false, REJECT_INVALID, "bad-protx-collateral");
         }
 
@@ -147,7 +147,7 @@ bool CheckProRegTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValid
 
         // Extract key from collateral. This only works for P2PK and P2PKH collaterals and will fail for P2SH.
         // Issuer of this ProRegTx must prove ownership with this key by signing the ProRegTx
-        if (!Ce4coinAddress(collateralTxDest).GetKeyID(keyForPayloadSig)) {
+        if (!CBitcoinAddress(collateralTxDest).GetKeyID(keyForPayloadSig)) {
             return state.DoS(10, false, REJECT_INVALID, "bad-protx-collateral-pkh");
         }
 
@@ -156,7 +156,7 @@ bool CheckProRegTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValid
         if (ptx.collateralOutpoint.n >= tx.vout.size()) {
             return state.DoS(10, false, REJECT_INVALID, "bad-protx-collateral-index");
         }
-        if (tx.vout[ptx.collateralOutpoint.n].nValue != 1000 * COIN) {
+        if (tx.vout[ptx.collateralOutpoint.n].nValue != 10000 * COIN) {
             return state.DoS(10, false, REJECT_INVALID, "bad-protx-collateral");
         }
 
@@ -186,7 +186,7 @@ bool CheckProRegTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValid
             return state.DoS(10, false, REJECT_DUPLICATE, "bad-protx-dup-key");
         }
 
-        if (!deterministicMNManager->IsDeterministicMNsSporkActive(pindexPrev->nHeight)) {
+        if (!deterministicMNManager->IsDIP3Enforced(pindexPrev->nHeight)) {
             if (ptx.keyIDOwner != ptx.keyIDVoting) {
                 return state.DoS(10, false, REJECT_INVALID, "bad-protx-key-not-same");
             }
@@ -257,7 +257,7 @@ bool CheckProUpServTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CVa
         if (!CheckInputsHash(tx, ptx, state)) {
             return false;
         }
-        if (!CheckHashSig(ptx, mn->pdmnState->pubKeyOperator, state)) {
+        if (!CheckHashSig(ptx, mn->pdmnState->pubKeyOperator.Get(), state)) {
             return false;
         }
     }
@@ -330,7 +330,7 @@ bool CheckProUpRegTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CVal
             }
         }
 
-        if (!deterministicMNManager->IsDeterministicMNsSporkActive(pindexPrev->nHeight)) {
+        if (!deterministicMNManager->IsDIP3Enforced(pindexPrev->nHeight)) {
             if (dmn->pdmnState->keyIDOwner != ptx.keyIDVoting) {
                 return state.DoS(10, false, REJECT_INVALID, "bad-protx-key-not-same");
             }
@@ -376,7 +376,7 @@ bool CheckProUpRevTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CVal
 
         if (!CheckInputsHash(tx, ptx, state))
             return false;
-        if (!CheckHashSig(ptx, dmn->pdmnState->pubKeyOperator, state))
+        if (!CheckHashSig(ptx, dmn->pdmnState->pubKeyOperator.Get(), state))
             return false;
     }
 
@@ -390,7 +390,7 @@ std::string CProRegTx::MakeSignString() const
     // We only include the important stuff in the string form...
 
     CTxDestination destPayout;
-    Ce4coinAddress addrPayout;
+    CBitcoinAddress addrPayout;
     std::string strPayout;
     if (ExtractDestination(scriptPayout, destPayout) && addrPayout.Set(destPayout)) {
         strPayout = addrPayout.ToString();
@@ -400,8 +400,8 @@ std::string CProRegTx::MakeSignString() const
 
     s += strPayout + "|";
     s += strprintf("%d", nOperatorReward) + "|";
-    s += Ce4coinAddress(keyIDOwner).ToString() + "|";
-    s += Ce4coinAddress(keyIDVoting).ToString() + "|";
+    s += CBitcoinAddress(keyIDOwner).ToString() + "|";
+    s += CBitcoinAddress(keyIDVoting).ToString() + "|";
 
     // ... and also the full hash of the payload as a protection agains malleability and replays
     s += ::SerializeHash(*this).ToString();
@@ -414,11 +414,11 @@ std::string CProRegTx::ToString() const
     CTxDestination dest;
     std::string payee = "unknown";
     if (ExtractDestination(scriptPayout, dest)) {
-        payee = Ce4coinAddress(dest).ToString();
+        payee = CBitcoinAddress(dest).ToString();
     }
 
     return strprintf("CProRegTx(nVersion=%d, collateralOutpoint=%s, addr=%s, nOperatorReward=%f, ownerAddress=%s, pubKeyOperator=%s, votingAddress=%s, scriptPayout=%s)",
-        nVersion, collateralOutpoint.ToStringShort(), addr.ToString(), (double)nOperatorReward / 100, Ce4coinAddress(keyIDOwner).ToString(), pubKeyOperator.ToString(), Ce4coinAddress(keyIDVoting).ToString(), payee);
+        nVersion, collateralOutpoint.ToStringShort(), addr.ToString(), (double)nOperatorReward / 100, CBitcoinAddress(keyIDOwner).ToString(), pubKeyOperator.ToString(), CBitcoinAddress(keyIDVoting).ToString(), payee);
 }
 
 void CProRegTx::ToJson(UniValue& obj) const
@@ -429,12 +429,12 @@ void CProRegTx::ToJson(UniValue& obj) const
     obj.push_back(Pair("collateralHash", collateralOutpoint.hash.ToString()));
     obj.push_back(Pair("collateralIndex", (int)collateralOutpoint.n));
     obj.push_back(Pair("service", addr.ToString(false)));
-    obj.push_back(Pair("ownerAddress", Ce4coinAddress(keyIDOwner).ToString()));
-    obj.push_back(Pair("votingAddress", Ce4coinAddress(keyIDVoting).ToString()));
+    obj.push_back(Pair("ownerAddress", CBitcoinAddress(keyIDOwner).ToString()));
+    obj.push_back(Pair("votingAddress", CBitcoinAddress(keyIDVoting).ToString()));
 
     CTxDestination dest;
     if (ExtractDestination(scriptPayout, dest)) {
-        Ce4coinAddress bitcoinAddress(dest);
+        CBitcoinAddress bitcoinAddress(dest);
         obj.push_back(Pair("payoutAddress", bitcoinAddress.ToString()));
     }
     obj.push_back(Pair("pubKeyOperator", pubKeyOperator.ToString()));
@@ -448,7 +448,7 @@ std::string CProUpServTx::ToString() const
     CTxDestination dest;
     std::string payee = "unknown";
     if (ExtractDestination(scriptOperatorPayout, dest)) {
-        payee = Ce4coinAddress(dest).ToString();
+        payee = CBitcoinAddress(dest).ToString();
     }
 
     return strprintf("CProUpServTx(nVersion=%d, proTxHash=%s, addr=%s, operatorPayoutAddress=%s)",
@@ -464,7 +464,7 @@ void CProUpServTx::ToJson(UniValue& obj) const
     obj.push_back(Pair("service", addr.ToString(false)));
     CTxDestination dest;
     if (ExtractDestination(scriptOperatorPayout, dest)) {
-        Ce4coinAddress bitcoinAddress(dest);
+        CBitcoinAddress bitcoinAddress(dest);
         obj.push_back(Pair("operatorPayoutAddress", bitcoinAddress.ToString()));
     }
     obj.push_back(Pair("inputsHash", inputsHash.ToString()));
@@ -475,11 +475,11 @@ std::string CProUpRegTx::ToString() const
     CTxDestination dest;
     std::string payee = "unknown";
     if (ExtractDestination(scriptPayout, dest)) {
-        payee = Ce4coinAddress(dest).ToString();
+        payee = CBitcoinAddress(dest).ToString();
     }
 
     return strprintf("CProUpRegTx(nVersion=%d, proTxHash=%s, pubKeyOperator=%s, votingAddress=%s, payoutAddress=%s)",
-        nVersion, proTxHash.ToString(), pubKeyOperator.ToString(), Ce4coinAddress(keyIDVoting).ToString(), payee);
+        nVersion, proTxHash.ToString(), pubKeyOperator.ToString(), CBitcoinAddress(keyIDVoting).ToString(), payee);
 }
 
 void CProUpRegTx::ToJson(UniValue& obj) const
@@ -488,10 +488,10 @@ void CProUpRegTx::ToJson(UniValue& obj) const
     obj.setObject();
     obj.push_back(Pair("version", nVersion));
     obj.push_back(Pair("proTxHash", proTxHash.ToString()));
-    obj.push_back(Pair("votingAddress", Ce4coinAddress(keyIDVoting).ToString()));
+    obj.push_back(Pair("votingAddress", CBitcoinAddress(keyIDVoting).ToString()));
     CTxDestination dest;
     if (ExtractDestination(scriptPayout, dest)) {
-        Ce4coinAddress bitcoinAddress(dest);
+        CBitcoinAddress bitcoinAddress(dest);
         obj.push_back(Pair("payoutAddress", bitcoinAddress.ToString()));
     }
     obj.push_back(Pair("pubKeyOperator", pubKeyOperator.ToString()));

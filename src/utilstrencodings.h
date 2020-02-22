@@ -1,13 +1,13 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The dash Core developers
+// Copyright (c) 2009-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 /**
  * Utilities for converting data from/to strings.
  */
-#ifndef E4COIN_UTILSTRENCODINGS_H
-#define E4COIN_UTILSTRENCODINGS_H
+#ifndef BITCOIN_UTILSTRENCODINGS_H
+#define BITCOIN_UTILSTRENCODINGS_H
 
 #include <stdint.h>
 #include <string>
@@ -26,7 +26,8 @@
 enum SafeChars
 {
     SAFE_CHARS_DEFAULT, //!< The full set of allowed chars
-    SAFE_CHARS_UA_COMMENT //!< BIP-0014 subset
+    SAFE_CHARS_UA_COMMENT, //!< BIP-0014 subset
+    SAFE_CHARS_FILENAME, //!< Chars allowed in filenames
 };
 
 /**
@@ -144,4 +145,4 @@ bool TimingResistantEqual(const T& a, const T& b)
  */
 bool ParseFixedPoint(const std::string &val, int decimals, int64_t *amount_out);
 
-#endif // E4COIN_UTILSTRENCODINGS_H
+#endif // BITCOIN_UTILSTRENCODINGS_H

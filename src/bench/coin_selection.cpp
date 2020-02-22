@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2015 The dash Core developers
+// Copyright (c) 2012-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -20,7 +20,7 @@ static void addCoin(const CAmount& nValue, const CWallet& wallet, std::vector<CO
     CWalletTx* wtx = new CWalletTx(&wallet, MakeTransactionRef(std::move(tx)));
 
     int nAge = 6 * 24;
-    COutput output(wtx, nInput, nAge, true, true);
+    COutput output(wtx, nInput, nAge, true /* spendable */, true /* solvable */, true /* safe */);
     vCoins.push_back(output);
 }
 
@@ -45,7 +45,7 @@ static void CoinSelection(benchmark::State& state)
 
         // Add coins.
         for (int i = 0; i < 1000; i++)
-            addCoin(1000 * COIN, wallet, vCoins);
+            addCoin(10000 * COIN, wallet, vCoins);
         addCoin(3 * COIN, wallet, vCoins);
 
         std::set<std::pair<const CWalletTx*, unsigned int> > setCoinsRet;

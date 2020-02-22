@@ -19,14 +19,14 @@ fi
 RETVAL=0
 
 prog=e4coind
-# you can override the lockfile via E4COIND_LOCKFILE in /etc/sysconfig/e4coind
-lockfile=${E4COIND_LOCKFILE-/var/lock/subsys/e4coind}
+# you can override the lockfile via BITCOIND_LOCKFILE in /etc/sysconfig/e4coind
+lockfile=${BITCOIND_LOCKFILE-/var/lock/subsys/e4coind}
 
-# e4coind defaults to /usr/bin/e4coind, override with E4COIND_BIN
-e4coind=${E4COIND_BIN-/usr/bin/e4coind}
+# e4coind defaults to /usr/bin/e4coind, override with BITCOIND_BIN
+e4coind=${BITCOIND_BIN-/usr/bin/e4coind}
 
-# e4coind opts default to -disablewallet, override with E4COIND_OPTS
-e4coind_opts=${E4COIND_OPTS--disablewallet}
+# e4coind opts default to -disablewallet, override with BITCOIND_OPTS
+e4coind_opts=${BITCOIND_OPTS--disablewallet}
 
 start() {
     echo -n $"Starting $prog: "

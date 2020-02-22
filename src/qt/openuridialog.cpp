@@ -1,5 +1,5 @@
-// Copyright (c) 2011-2014 The dash Core developers
-// Copyright (c) 2014-2017 The e4Coin Core developers
+// Copyright (c) 2011-2014 The Bitcoin Core developers
+// Copyright (c) 2014-2016 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -34,7 +34,7 @@ QString OpenURIDialog::getURI()
 void OpenURIDialog::accept()
 {
     SendCoinsRecipient rcp;
-    if(GUIUtil::parsee4coinURI(getURI(), &rcp))
+    if(GUIUtil::parseBitcoinURI(getURI(), &rcp))
     {
         /* Only accept value URIs */
         QDialog::accept();

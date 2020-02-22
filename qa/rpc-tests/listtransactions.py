@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2016 The dash Core developers
+# Copyright (c) 2014-2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
+"""Test the listtransactions API."""
 
-# Exercise the listtransactions API
-
-from test_framework.test_framework import e4coinTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import *
 from test_framework.mininode import CTransaction, COIN
 from io import BytesIO
@@ -16,7 +15,7 @@ def txFromHex(hexstring):
     tx.deserialize(f)
     return tx
 
-class ListTransactionsTest(e4coinTestFramework):
+class ListTransactionsTest(BitcoinTestFramework):
     def __init__(self):
         super().__init__()
         self.num_nodes = 4

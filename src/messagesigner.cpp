@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 The e4Coin Core developers
+// Copyright (c) 2014-2018 The Dash Core developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -11,7 +11,7 @@
 
 bool CMessageSigner::GetKeysFromSecret(const std::string& strSecret, CKey& keyRet, CPubKey& pubkeyRet)
 {
-    Ce4coinSecret vchSecret;
+    CBitcoinSecret vchSecret;
 
     if(!vchSecret.SetString(strSecret)) return false;
 

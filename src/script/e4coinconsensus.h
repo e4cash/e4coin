@@ -1,12 +1,12 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The dash Core developers
+// Copyright (c) 2009-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_E4COINCONSENSUS_H
-#define E4COIN_E4COINCONSENSUS_H
+#ifndef BITCOIN_BITCOINCONSENSUS_H
+#define BITCOIN_BITCOINCONSENSUS_H
 
-#if defined(BUILD_E4COIN_INTERNAL) && defined(HAVE_CONFIG_H)
+#if defined(BUILD_BITCOIN_INTERNAL) && defined(HAVE_CONFIG_H)
 #include "config/e4coin-config.h"
   #if defined(_WIN32)
     #if defined(DLL_EXPORT)
@@ -19,7 +19,7 @@
   #elif defined(HAVE_FUNC_ATTRIBUTE_VISIBILITY)
     #define EXPORT_SYMBOL __attribute__ ((visibility ("default")))
   #endif
-#elif defined(MSC_VER) && !defined(STATIC_LIBE4COINCONSENSUS)
+#elif defined(MSC_VER) && !defined(STATIC_LIBBITCOINCONSENSUS)
   #define EXPORT_SYMBOL __declspec(dllimport)
 #endif
 
@@ -31,7 +31,7 @@
 extern "C" {
 #endif
 
-#define E4COINCONSENSUS_API_VER 0
+#define BITCOINCONSENSUS_API_VER 0
 
 typedef enum e4coinconsensus_error_t
 {
@@ -72,4 +72,4 @@ EXPORT_SYMBOL unsigned int e4coinconsensus_version();
 
 #undef EXPORT_SYMBOL
 
-#endif // E4COIN_E4COINCONSENSUS_H
+#endif // BITCOIN_BITCOINCONSENSUS_H

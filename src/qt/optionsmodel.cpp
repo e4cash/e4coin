@@ -1,5 +1,6 @@
-// Copyright (c) 2011-2015 The dash Core developers
-// Copyright (c) 2014-2017 The e4Coin Core developers
+// Copyright (c) 2011-2015 The Bitcoin Core developers
+// Copyright (c) 2014-2019 The Dash Core developers
+// Copyright (c) 2020 The e4Coin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -23,7 +24,6 @@
 #include "wallet/wallet.h"
 #include "wallet/walletdb.h"
 
-#include "masternodeconfig.h"
 #include "privatesend-client.h"
 #endif
 
@@ -75,7 +75,7 @@ void OptionsModel::Init(bool resetSettings)
 
     // Display
     if (!settings.contains("nDisplayUnit"))
-        settings.setValue("nDisplayUnit", e4coinUnits::E4COIN);
+        settings.setValue("nDisplayUnit", BitcoinUnits::E4CN);
     nDisplayUnit = settings.value("nDisplayUnit").toInt();
 
     if (!settings.contains("strThirdPartyTxUrls"))
@@ -92,9 +92,6 @@ void OptionsModel::Init(bool resetSettings)
 
     if (!settings.contains("digits"))
         settings.setValue("digits", "2");
-
-    if (!settings.contains("fShowMasternodesTab"))
-        settings.setValue("fShowMasternodesTab", masternodeConfig.getCount());
 
     // PrivateSend
     if (!settings.contains("fShowAdvancedPSUI"))

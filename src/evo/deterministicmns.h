@@ -1,9 +1,9 @@
-// Copyright (c) 2018 The e4Coin Core developers
+// Copyright (c) 2018 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_DETERMINISTICMNS_H
-#define E4COIN_DETERMINISTICMNS_H
+#ifndef E4CN_DETERMINISTICMNS_H
+#define E4CN_DETERMINISTICMNS_H
 
 #include "arith_uint256.h"
 #include "bls/bls.h"
@@ -44,7 +44,7 @@ public:
     uint256 confirmedHashWithProRegTxHash;
 
     CKeyID keyIDOwner;
-    CBLSPublicKey pubKeyOperator;
+    CBLSLazyPublicKey pubKeyOperator;
     CKeyID keyIDVoting;
     CService addr;
     CScript scriptPayout;
@@ -55,7 +55,7 @@ public:
     CDeterministicMNState(const CProRegTx& proTx)
     {
         keyIDOwner = proTx.keyIDOwner;
-        pubKeyOperator = proTx.pubKeyOperator;
+        pubKeyOperator.Set(proTx.pubKeyOperator);
         keyIDVoting = proTx.keyIDVoting;
         addr = proTx.addr;
         scriptPayout = proTx.scriptPayout;
@@ -89,7 +89,7 @@ public:
 
     void ResetOperatorFields()
     {
-        pubKeyOperator = CBLSPublicKey();
+        pubKeyOperator.Set(CBLSPublicKey());
         addr = CService();
         scriptOperatorPayout = CScript();
         nRevocationReason = CProUpRevTx::REASON_NOT_SPECIFIED;
@@ -195,6 +195,21 @@ void UnserializeImmerMap(Stream& is, immer::map<K, T, Hash, Equal>& m)
     }
 }
 
+// For some reason the compiler is not able to choose the correct Serialize/Deserialize methods without a specialized
+// version of SerReadWrite. It otherwise always chooses the version that calls a.Serialize()
+template<typename Stream, typename K, typename T, typename Hash, typename Equal>
+inline void SerReadWrite(Stream& s, const immer::map<K, T, Hash, Equal>& m, CSerActionSerialize ser_action)
+{
+    ::SerializeImmerMap(s, m);
+}
+
+template<typename Stream, typename K, typename T, typename Hash, typename Equal>
+inline void SerReadWrite(Stream& s, immer::map<K, T, Hash, Equal>& obj, CSerActionUnserialize ser_action)
+{
+    ::UnserializeImmerMap(s, obj);
+}
+
+
 class CDeterministicMNList
 {
 public:
@@ -226,13 +241,8 @@ public:
     {
         READWRITE(blockHash);
         READWRITE(nHeight);
-        if (ser_action.ForRead()) {
-            UnserializeImmerMap(s, mnMap);
-            UnserializeImmerMap(s, mnUniquePropertyMap);
-        } else {
-            SerializeImmerMap(s, mnMap);
-            SerializeImmerMap(s, mnUniquePropertyMap);
-        }
+        READWRITE(mnMap);
+        READWRITE(mnUniquePropertyMap);
     }
 
 public:
@@ -289,10 +299,25 @@ public:
     {
         return GetMN(proTxHash) != nullptr;
     }
+    bool HasValidMN(const uint256& proTxHash) const
+    {
+        return GetValidMN(proTxHash) != nullptr;
+    }
+    bool HasMNByCollateral(const COutPoint& collateralOutpoint) const
+    {
+        return GetMNByCollateral(collateralOutpoint) != nullptr;
+    }
+    bool HasValidMNByCollateral(const COutPoint& collateralOutpoint) const
+    {
+        return GetValidMNByCollateral(collateralOutpoint) != nullptr;
+    }
     CDeterministicMNCPtr GetMN(const uint256& proTxHash) const;
     CDeterministicMNCPtr GetValidMN(const uint256& proTxHash) const;
     CDeterministicMNCPtr GetMNByOperatorKey(const CBLSPublicKey& pubKey);
     CDeterministicMNCPtr GetMNByCollateral(const COutPoint& collateralOutpoint) const;
+    CDeterministicMNCPtr GetValidMNByCollateral(const COutPoint& collateralOutpoint) const;
+    CDeterministicMNCPtr GetMNByService(const CService& service) const;
+    CDeterministicMNCPtr GetValidMNByService(const CService& service) const;
     CDeterministicMNCPtr GetMNPayee() const;
 
     /**
@@ -466,7 +491,7 @@ private:
 public:
     CDeterministicMNManager(CEvoDB& _evoDb);
 
-    bool ProcessBlock(const CBlock& block, const CBlockIndex* pindex, CValidationState& state);
+    bool ProcessBlock(const CBlock& block, const CBlockIndex* pindex, CValidationState& state, bool fJustCheck);
     bool UndoBlock(const CBlock& block, const CBlockIndex* pindex);
 
     void UpdatedBlockTip(const CBlockIndex* pindex);
@@ -479,20 +504,15 @@ public:
     CDeterministicMNList GetListForBlock(const uint256& blockHash);
     CDeterministicMNList GetListAtChainTip();
 
-    // TODO remove after removal of old non-deterministic lists
-    bool HasValidMNCollateralAtChainTip(const COutPoint& outpoint);
-    bool HasMNCollateralAtChainTip(const COutPoint& outpoint);
-
     // Test if given TX is a ProRegTx which also contains the collateral at index n
     bool IsProTxWithCollateral(const CTransactionRef& tx, uint32_t n);
 
-    bool IsDeterministicMNsSporkActive(int nHeight = -1);
+    bool IsDIP3Enforced(int nHeight = -1);
 
 private:
-    int64_t GetSpork15Value();
     void CleanupCache(int nHeight);
 };
 
 extern CDeterministicMNManager* deterministicMNManager;
 
-#endif //E4COIN_DETERMINISTICMNS_H
+#endif //E4CN_DETERMINISTICMNS_H

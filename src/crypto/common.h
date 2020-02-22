@@ -1,9 +1,9 @@
-// Copyright (c) 2014 The dash Core developers
+// Copyright (c) 2014 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_CRYPTO_COMMON_H
-#define E4COIN_CRYPTO_COMMON_H
+#ifndef BITCOIN_CRYPTO_COMMON_H
+#define BITCOIN_CRYPTO_COMMON_H
 
 #if defined(HAVE_CONFIG_H)
 #include "e4coin-config.h"
@@ -79,4 +79,4 @@ void static inline WriteBE64(unsigned char* ptr, uint64_t x)
     memcpy(ptr, (char*)&v, 8);
 }
 
-#endif // E4COIN_CRYPTO_COMMON_H
+#endif // BITCOIN_CRYPTO_COMMON_H

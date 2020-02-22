@@ -1,9 +1,9 @@
-// Copyright (c) 2018 The e4Coin Core developers
+// Copyright (c) 2018 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_CRYPTO_BLS_IES_H
-#define E4COIN_CRYPTO_BLS_IES_H
+#ifndef E4CN_CRYPTO_BLS_IES_H
+#define E4CN_CRYPTO_BLS_IES_H
 
 #include "bls.h"
 #include "streams.h"
@@ -161,4 +161,4 @@ public:
     }
 };
 
-#endif // E4COIN_CRYPTO_BLS_IES_H
+#endif // E4CN_CRYPTO_BLS_IES_H

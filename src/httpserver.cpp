@@ -1,4 +1,4 @@
-// Copyright (c) 2015 The dash Core developers
+// Copyright (c) 2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -371,8 +371,9 @@ static void libevent_log_cb(int severity, const char *msg)
 #endif
     if (severity >= EVENT_LOG_WARN) // Log warn messages and higher without debug category
         LogPrintf("libevent: %s\n", msg);
-    else
-        LogPrint("libevent", "libevent: %s\n", msg);
+    // The below code causes log spam on Travis and the output of these logs has never been of any use so far
+    //else
+    //    LogPrint("libevent", "libevent: %s\n", msg);
 }
 
 bool InitHTTPServer()

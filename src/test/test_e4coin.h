@@ -1,10 +1,10 @@
-// Copyright (c) 2015 The dash Core developers
-// Copyright (c) 2014-2017 The e4Coin Core developers
+// Copyright (c) 2015 The Bitcoin Core developers
+// Copyright (c) 2014-2018 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_TEST_TEST_E4COIN_H
-#define E4COIN_TEST_TEST_E4COIN_H
+#ifndef BITCOIN_TEST_TEST_E4CN_H
+#define BITCOIN_TEST_TEST_E4CN_H
 
 #include "chainparamsbase.h"
 #include "key.h"
@@ -82,30 +82,27 @@ struct TestChainDIP3BeforeActivationSetup : public TestChainSetup
 };
 
 class CTxMemPoolEntry;
-class CTxMemPool;
 
 struct TestMemPoolEntryHelper
 {
     // Default values
     CAmount nFee;
     int64_t nTime;
-    double dPriority;
     unsigned int nHeight;
     bool spendsCoinbase;
     unsigned int sigOpCount;
     LockPoints lp;
 
     TestMemPoolEntryHelper() :
-        nFee(0), nTime(0), dPriority(0.0), nHeight(1),
+        nFee(0), nTime(0), nHeight(1),
         spendsCoinbase(false), sigOpCount(4) { }
     
-    CTxMemPoolEntry FromTx(const CMutableTransaction &tx, CTxMemPool *pool = NULL);
-    CTxMemPoolEntry FromTx(const CTransaction &tx, CTxMemPool *pool = NULL);
+    CTxMemPoolEntry FromTx(const CMutableTransaction &tx);
+    CTxMemPoolEntry FromTx(const CTransaction &tx);
 
     // Change the default value
     TestMemPoolEntryHelper &Fee(CAmount _fee) { nFee = _fee; return *this; }
     TestMemPoolEntryHelper &Time(int64_t _time) { nTime = _time; return *this; }
-    TestMemPoolEntryHelper &Priority(double _priority) { dPriority = _priority; return *this; }
     TestMemPoolEntryHelper &Height(unsigned int _height) { nHeight = _height; return *this; }
     TestMemPoolEntryHelper &SpendsCoinbase(bool _flag) { spendsCoinbase = _flag; return *this; }
     TestMemPoolEntryHelper &SigOps(unsigned int _sigops) { sigOpCount = _sigops; return *this; }

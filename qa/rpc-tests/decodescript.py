@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2016 The dash Core developers
+# Copyright (c) 2015-2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
+"""Test decoding scripts via decodescript RPC command."""
 
-from test_framework.test_framework import e4coinTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import *
 from test_framework.mininode import *
 from io import BytesIO
 
-class DecodeScriptTest(e4coinTestFramework):
-    """Tests decoding scripts via RPC command "decodescript"."""
+class DecodeScriptTest(BitcoinTestFramework):
 
     def __init__(self):
         super().__init__()
@@ -111,7 +111,7 @@ class DecodeScriptTest(e4coinTestFramework):
         assert_equal('OP_IF ' + public_key + ' OP_CHECKSIGVERIFY OP_ELSE 500000 OP_CHECKLOCKTIMEVERIFY OP_DROP OP_ENDIF ' + public_key + ' OP_CHECKSIG', rpc_result['asm'])
 
     def decoderawtransaction_asm_sighashtype(self):
-        """Tests decoding scripts via RPC command "decoderawtransaction".
+        """Test decoding scripts via RPC command "decoderawtransaction".
 
         This test is in with the "decodescript" tests because they are testing the same "asm" script decodes.
         """

@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2016 The dash Core developers
+# Copyright (c) 2014-2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
-
-from test_framework.test_framework import e4coinTestFramework
+"""Test the importprunedfunds and removeprunedfunds RPCs."""
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import *
 
 
-class ImportPrunedFundsTest(e4coinTestFramework):
+class ImportPrunedFundsTest(BitcoinTestFramework):
 
     def __init__(self):
         super().__init__()
@@ -21,7 +21,7 @@ class ImportPrunedFundsTest(e4coinTestFramework):
         self.sync_all()
 
     def run_test(self):
-        print("Mining blocks...")
+        self.log.info("Mining blocks...")
         self.nodes[0].generate(101)
 
         self.sync_all()
@@ -76,12 +76,7 @@ class ImportPrunedFundsTest(e4coinTestFramework):
         self.sync_all()
 
         #Import with no affiliated address
-        try:
-            self.nodes[1].importprunedfunds(rawtxn1, proof1)
-        except JSONRPCException as e:
-            assert('No addresses' in e.error['message'])
-        else:
-            assert(False)
+        assert_raises_jsonrpc(-5, "No addresses", self.nodes[1].importprunedfunds, rawtxn1, proof1)
 
         balance1 = self.nodes[1].getbalance("", 0, False, True)
         assert_equal(balance1, Decimal(0))
@@ -112,12 +107,7 @@ class ImportPrunedFundsTest(e4coinTestFramework):
         assert_equal(address_info['ismine'], True)
 
         #Remove transactions
-        try:
-            self.nodes[1].removeprunedfunds(txnid1)
-        except JSONRPCException as e:
-            assert('does not exist' in e.error['message'])
-        else:
-            assert(False)
+        assert_raises_jsonrpc(-8, "Transaction does not exist in wallet.", self.nodes[1].removeprunedfunds, txnid1)
 
         balance1 = self.nodes[1].getbalance("*", 0, False, True)
         assert_equal(balance1, Decimal('0.075'))

@@ -1,10 +1,8 @@
-// Copyright (c) 2014-2018 The e4Coin Core developers
+// Copyright (c) 2014-2018 The Dash Core developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #ifndef GOVERNANCE_CLASSES_H
 #define GOVERNANCE_CLASSES_H
-
-//#define ENABLE_E4COIN_DEBUG
 
 #include "base58.h"
 #include "governance.h"
@@ -90,7 +88,7 @@ public:
     {
     }
 
-    CGovernancePayment(Ce4coinAddress addrIn, CAmount nAmountIn) :
+    CGovernancePayment(CBitcoinAddress addrIn, CAmount nAmountIn) :
         fValid(false),
         script(),
         nAmount(0)

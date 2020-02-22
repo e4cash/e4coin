@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2015 The dash Core developers
+// Copyright (c) 2011-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -92,14 +92,14 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     }
     
     /* Theme selector */
-    ui->theme->addItem(QString("E4COIN-light"), QVariant("light"));
-    ui->theme->addItem(QString("E4COIN-light-hires"), QVariant("light-hires"));
-    ui->theme->addItem(QString("E4COIN-light-retro"), QVariant("light-retro"));
-    ui->theme->addItem(QString("E4COIN-light-hires-retro"), QVariant("light-hires-retro"));
-    ui->theme->addItem(QString("E4COIN-blue"), QVariant("drkblue"));
-    ui->theme->addItem(QString("E4COIN-Crownium"), QVariant("crownium"));
-    ui->theme->addItem(QString("E4COIN-traditional"), QVariant("trad"));
-    
+    ui->theme->addItem(QString("Light"), QVariant("light"));
+    ui->theme->addItem(QString("Light-HiRes"), QVariant("light-hires"));
+    ui->theme->addItem(QString("Light-Retro"), QVariant("light-retro"));
+    ui->theme->addItem(QString("Light-HiRes-Retro"), QVariant("light-hires-retro"));
+    ui->theme->addItem(QString("Blue"), QVariant("drkblue"));
+    ui->theme->addItem(QString("Crownium"), QVariant("crownium"));
+    ui->theme->addItem(QString("Traditional"), QVariant("trad"));
+
     /* Language selector */
     QDir translations(":translations");
 
@@ -138,7 +138,7 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     ui->thirdPartyTxUrls->setPlaceholderText("https://example.com/tx/%s");
 #endif
 
-    ui->unit->setModel(new e4coinUnits(this));
+    ui->unit->setModel(new BitcoinUnits(this));
 
     /* Widget-to-option mapper */
     mapper = new QDataWidgetMapper(this);

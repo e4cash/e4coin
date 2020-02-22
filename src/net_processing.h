@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The dash Core developers
+// Copyright (c) 2009-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_NET_PROCESSING_H
-#define E4COIN_NET_PROCESSING_H
+#ifndef BITCOIN_NET_PROCESSING_H
+#define BITCOIN_NET_PROCESSING_H
 
 #include "net.h"
 #include "validationinterface.h"
@@ -53,6 +53,7 @@ struct CNodeStateStats {
 bool GetNodeStateStats(NodeId nodeid, CNodeStateStats &stats);
 /** Increase a node's misbehavior score. */
 void Misbehaving(NodeId nodeid, int howmuch);
+bool IsBanned(NodeId nodeid);
 
 /** Process protocol messages received from a given node */
 bool ProcessMessages(CNode* pfrom, CConnman& connman, const std::atomic<bool>& interrupt);
@@ -66,4 +67,4 @@ bool ProcessMessages(CNode* pfrom, CConnman& connman, const std::atomic<bool>& i
  */
 bool SendMessages(CNode* pto, CConnman& connman, const std::atomic<bool>& interrupt);
 
-#endif // E4COIN_NET_PROCESSING_H
+#endif // BITCOIN_NET_PROCESSING_H

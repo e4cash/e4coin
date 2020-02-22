@@ -1,5 +1,5 @@
-# Copyright (c) 2013-2016 The dash Core developers
-# Copyright (c) 2014-2018 The e4Coin Core developers
+# Copyright (c) 2013-2016 The Bitcoin Core developers
+# Copyright (c) 2014-2018 The Dash Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -10,6 +10,29 @@ AM_CXXFLAGS = $(HARDENED_CXXFLAGS) $(ERROR_CXXFLAGS)
 AM_CPPFLAGS = $(HARDENED_CPPFLAGS)
 EXTRA_LIBRARIES =
 
+if ENABLE_STACKTRACES
+if STACKTRACE_WRAPPED_CXX_ABI
+# Wrap internal C++ ABI's so that we can attach stacktraces to exceptions
+LDFLAGS_WRAP_EXCEPTIONS = -Wl,-wrap,__cxa_allocate_exception -Wl,-wrap,__cxa_free_exception
+if TARGET_WINDOWS
+LDFLAGS_WRAP_EXCEPTIONS += -Wl,-wrap,_assert -Wl,-wrap,_wassert
+else
+LDFLAGS_WRAP_EXCEPTIONS += -Wl,-wrap,__assert_fail
+endif
+endif
+
+if RDYNAMIC_SUPPORTED
+# This gives better stacktraces
+AM_CXXFLAGS += -rdynamic
+endif
+
+if TARGET_WINDOWS
+BACKTRACE_LIB = -ldbghelp -lbacktrace
+else
+BACKTRACE_LIB = -lbacktrace
+endif
+endif
+
 if EMBEDDED_UNIVALUE
 LIBUNIVALUE = univalue/libunivalue.la
 
@@ -19,31 +42,31 @@ else
 LIBUNIVALUE = $(UNIVALUE_LIBS)
 endif
 
-E4COIN_CONFIG_INCLUDES=-I$(builddir)/config
-E4COIN_INCLUDES=-I$(builddir) -I$(builddir)/obj $(BDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS) $(CRYPTO_CFLAGS) $(SSL_CFLAGS)
+BITCOIN_CONFIG_INCLUDES=-I$(builddir)/config
+BITCOIN_INCLUDES=-I$(builddir) -I$(builddir)/obj $(BDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS) $(CRYPTO_CFLAGS) $(SSL_CFLAGS)
 
-E4COIN_INCLUDES += -I$(srcdir)/secp256k1/include
-E4COIN_INCLUDES += $(UNIVALUE_CFLAGS)
+BITCOIN_INCLUDES += -I$(srcdir)/secp256k1/include
+BITCOIN_INCLUDES += $(UNIVALUE_CFLAGS)
 
 BLS_LIBS=-lchiabls -lgmp
 
-LIBE4COIN_SERVER=libe4coin_server.a
-LIBE4COIN_COMMON=libe4coin_common.a
-LIBE4COIN_CONSENSUS=libe4coin_consensus.a
-LIBE4COIN_CLI=libe4coin_cli.a
-LIBE4COIN_UTIL=libe4coin_util.a
-LIBE4COIN_CRYPTO=crypto/libe4coin_crypto.a
-LIBE4COINQT=qt/libe4coinqt.a
+LIBBITCOIN_SERVER=libe4coin_server.a
+LIBBITCOIN_COMMON=libe4coin_common.a
+LIBBITCOIN_CONSENSUS=libe4coin_consensus.a
+LIBBITCOIN_CLI=libe4coin_cli.a
+LIBBITCOIN_UTIL=libe4coin_util.a
+LIBBITCOIN_CRYPTO=crypto/libe4coin_crypto.a
+LIBBITCOINQT=qt/libe4coinqt.a
 LIBSECP256K1=secp256k1/libsecp256k1.la
 
 if ENABLE_ZMQ
-LIBE4COIN_ZMQ=libe4coin_zmq.a
+LIBBITCOIN_ZMQ=libe4coin_zmq.a
 endif
-if BUILD_E4COIN_LIBS
-LIBE4COINCONSENSUS=libe4coinconsensus.la
+if BUILD_BITCOIN_LIBS
+LIBBITCOINCONSENSUS=libe4coinconsensus.la
 endif
 if ENABLE_WALLET
-LIBE4COIN_WALLET=libe4coin_wallet.a
+LIBBITCOIN_WALLET=libe4coin_wallet.a
 endif
 
 $(LIBSECP256K1): $(wildcard secp256k1/src/*) $(wildcard secp256k1/include/*)
@@ -52,32 +75,32 @@ $(LIBSECP256K1): $(wildcard secp256k1/src/*) $(wildcard secp256k1/include/*)
 # Make is not made aware of per-object dependencies to avoid limiting building parallelization
 # But to build the less dependent modules first, we manually select their order here:
 EXTRA_LIBRARIES += \
-  $(LIBE4COIN_CRYPTO) \
-  $(LIBE4COIN_UTIL) \
-  $(LIBE4COIN_COMMON) \
-  $(LIBE4COIN_CONSENSUS) \
-  $(LIBE4COIN_SERVER) \
-  $(LIBE4COIN_CLI) \
-  $(LIBE4COIN_WALLET) \
-  $(LIBE4COIN_ZMQ)
+  $(LIBBITCOIN_CRYPTO) \
+  $(LIBBITCOIN_UTIL) \
+  $(LIBBITCOIN_COMMON) \
+  $(LIBBITCOIN_CONSENSUS) \
+  $(LIBBITCOIN_SERVER) \
+  $(LIBBITCOIN_CLI) \
+  $(LIBBITCOIN_WALLET) \
+  $(LIBBITCOIN_ZMQ)
 
-lib_LTLIBRARIES = $(LIBE4COINCONSENSUS)
+lib_LTLIBRARIES = $(LIBBITCOINCONSENSUS)
 
 bin_PROGRAMS =
 TESTS =
 BENCHMARKS =
 
-if BUILD_E4COIND
+if BUILD_BITCOIND
   bin_PROGRAMS += e4coind
 endif
 
-if BUILD_E4COIN_UTILS
+if BUILD_BITCOIN_UTILS
   bin_PROGRAMS += e4coin-cli e4coin-tx
 endif
 
 .PHONY: FORCE check-symbols check-security
 # e4coin core #
-E4COIN_CORE_H = \
+BITCOIN_CORE_H = \
   addrdb.h \
   activemasternode.h \
   addressindex.h \
@@ -85,6 +108,7 @@ E4COIN_CORE_H = \
   addrman.h \
   alert.h \
   base58.h \
+  batchedlogger.h \
   bip39.h \
   bip39_english.h \
   blockencodings.h \
@@ -109,12 +133,14 @@ E4COIN_CORE_H = \
   core_memusage.h \
   cuckoocache.h \
   ctpl.h \
-  evo/evodb.h \
-  evo/specialtx.h \
-  evo/providertx.h \
-  evo/deterministicmns.h \
+  cxxtimer.hpp \
   evo/cbtx.h \
+  evo/deterministicmns.h \
+  evo/evodb.h \
+  evo/mnauth.h \
+  evo/providertx.h \
   evo/simplifiedmns.h \
+  evo/specialtx.h \
   privatesend.h \
   privatesend-client.h \
   privatesend-server.h \
@@ -139,16 +165,23 @@ E4COIN_CORE_H = \
   keystore.h \
   dbwrapper.h \
   limitedmap.h \
-  llmq/quorums_commitment.h \
+  llmq/quorums.h \
   llmq/quorums_blockprocessor.h \
-  llmq/quorums_dummydkg.h \
-  llmq/quorums_utils.h \
+  llmq/quorums_commitment.h \
+  llmq/quorums_chainlocks.h \
+  llmq/quorums_debug.h \
+  llmq/quorums_dkgsessionhandler.h \
+  llmq/quorums_dkgsessionmgr.h \
+  llmq/quorums_dkgsession.h \
   llmq/quorums_init.h \
-  masternode.h \
+  llmq/quorums_instantsend.h \
+  llmq/quorums_signing.h \
+  llmq/quorums_signing_shares.h \
+  llmq/quorums_utils.h \
+  masternode-meta.h \
   masternode-payments.h \
   masternode-sync.h \
-  masternodeman.h \
-  masternodeconfig.h \
+  masternode-utils.h \
   memusage.h \
   merkleblock.h \
   messagesigner.h \
@@ -170,12 +203,14 @@ E4COIN_CORE_H = \
   rpc/protocol.h \
   rpc/server.h \
   rpc/register.h \
+  saltedhasher.h \
   scheduler.h \
   script/sigcache.h \
   script/sign.h \
   script/standard.h \
   script/ismine.h \
   spork.h \
+  stacktraces.h \
   streams.h \
   support/allocators/mt_pooled_secure.h \
   support/allocators/pooled_secure.h \
@@ -193,6 +228,7 @@ E4COIN_CORE_H = \
   txmempool.h \
   ui_interface.h \
   undo.h \
+  unordered_lru_cache.h \
   util.h \
   utilmoneystr.h \
   utiltime.h \
@@ -219,24 +255,26 @@ obj/build.h: FORCE
 libe4coin_util_a-clientversion.$(OBJEXT): obj/build.h
 
 # server: shared between e4coind and e4coin-qt
-libe4coin_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(E4COIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
+libe4coin_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
 libe4coin_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libe4coin_server_a_SOURCES = \
   activemasternode.cpp \
   addrman.cpp \
   addrdb.cpp \
   alert.cpp \
+  batchedlogger.cpp \
   bloom.cpp \
   blockencodings.cpp \
   chain.cpp \
   checkpoints.cpp \
   dsnotificationinterface.cpp \
-  evo/evodb.cpp \
-  evo/specialtx.cpp \
-  evo/providertx.cpp \
-  evo/deterministicmns.cpp \
   evo/cbtx.cpp \
+  evo/deterministicmns.cpp \
+  evo/evodb.cpp \
+  evo/mnauth.cpp \
+  evo/providertx.cpp \
   evo/simplifiedmns.cpp \
+  evo/specialtx.cpp \
   httprpc.cpp \
   httpserver.cpp \
   init.cpp \
@@ -248,16 +286,23 @@ libe4coin_server_a_SOURCES = \
   governance-validators.cpp \
   governance-vote.cpp \
   governance-votedb.cpp \
-  llmq/quorums_commitment.cpp \
+  llmq/quorums.cpp \
   llmq/quorums_blockprocessor.cpp \
-  llmq/quorums_dummydkg.cpp \
-  llmq/quorums_utils.cpp \
+  llmq/quorums_commitment.cpp \
+  llmq/quorums_chainlocks.cpp \
+  llmq/quorums_debug.cpp \
+  llmq/quorums_dkgsessionhandler.cpp \
+  llmq/quorums_dkgsessionmgr.cpp \
+  llmq/quorums_dkgsession.cpp \
   llmq/quorums_init.cpp \
-  masternode.cpp \
+  llmq/quorums_instantsend.cpp \
+  llmq/quorums_signing.cpp \
+  llmq/quorums_signing_shares.cpp \
+  llmq/quorums_utils.cpp \
+  masternode-meta.cpp \
   masternode-payments.cpp \
   masternode-sync.cpp \
-  masternodeconfig.cpp \
-  masternodeman.cpp \
+  masternode-utils.cpp \
   merkleblock.cpp \
   messagesigner.cpp \
   miner.cpp \
@@ -279,6 +324,7 @@ libe4coin_server_a_SOURCES = \
   rpc/net.cpp \
   rpc/rawtransaction.cpp \
   rpc/rpcevo.cpp \
+  rpc/rpcquorums.cpp \
   rpc/server.cpp \
   script/sigcache.cpp \
   script/ismine.cpp \
@@ -292,10 +338,10 @@ libe4coin_server_a_SOURCES = \
   validation.cpp \
   validationinterface.cpp \
   versionbits.cpp \
-  $(E4COIN_CORE_H)
+  $(BITCOIN_CORE_H)
 
 if ENABLE_ZMQ
-libe4coin_zmq_a_CPPFLAGS = $(E4COIN_INCLUDES) $(ZMQ_CFLAGS)
+libe4coin_zmq_a_CPPFLAGS = $(BITCOIN_INCLUDES) $(ZMQ_CFLAGS)
 libe4coin_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libe4coin_zmq_a_SOURCES = \
   zmq/zmqabstractnotifier.cpp \
@@ -306,7 +352,7 @@ endif
 
 # wallet: shared between e4coind and e4coin-qt, but only linked
 # when wallet enabled
-libe4coin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(E4COIN_INCLUDES)
+libe4coin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libe4coin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libe4coin_wallet_a_SOURCES = \
   keepass.cpp \
@@ -318,10 +364,10 @@ libe4coin_wallet_a_SOURCES = \
   wallet/rpcwallet.cpp \
   wallet/wallet.cpp \
   wallet/walletdb.cpp \
-  $(E4COIN_CORE_H)
+  $(BITCOIN_CORE_H)
 
 # crypto primitives library
-crypto_libe4coin_crypto_a_CPPFLAGS = $(AM_CPPFLAGS) $(E4COIN_CONFIG_INCLUDES) $(PIC_FLAGS)
+crypto_libe4coin_crypto_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_CONFIG_INCLUDES) $(PIC_FLAGS)
 crypto_libe4coin_crypto_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS) $(PIC_FLAGS)
 crypto_libe4coin_crypto_a_SOURCES = \
   crypto/aes.cpp \
@@ -368,7 +414,7 @@ crypto_libe4coin_crypto_a_SOURCES += \
   crypto/sph_types.h
 
 # consensus: shared between all executables that validate any consensus rules.
-libe4coin_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(E4COIN_INCLUDES)
+libe4coin_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libe4coin_consensus_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libe4coin_consensus_a_SOURCES = \
   amount.h \
@@ -406,7 +452,7 @@ libe4coin_consensus_a_SOURCES = \
   version.h
 
 # common: shared between e4coind, and e4coin-qt and non-server tools
-libe4coin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(E4COIN_INCLUDES)
+libe4coin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libe4coin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libe4coin_common_a_SOURCES = \
   amount.cpp \
@@ -423,18 +469,20 @@ libe4coin_common_a_SOURCES = \
   netaddress.cpp \
   netbase.cpp \
   protocol.cpp \
+  saltedhasher.cpp \
   scheduler.cpp \
   script/sign.cpp \
   script/standard.cpp \
   warnings.cpp \
-  $(E4COIN_CORE_H)
+  $(BITCOIN_CORE_H)
 
 # util: shared between all executables.
 # This library *must* be included to make sure that the glibc
 # backward-compatibility objects and their sanity checks are linked.
-libe4coin_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(E4COIN_INCLUDES)
+libe4coin_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libe4coin_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libe4coin_util_a_SOURCES = \
+  bls/bls_batchverifier.h \
   bls/bls_ies.cpp \
   bls/bls_ies.h \
   bls/bls_worker.cpp \
@@ -447,6 +495,7 @@ libe4coin_util_a_SOURCES = \
   compat/strnlen.cpp \
   random.cpp \
   rpc/protocol.cpp \
+  stacktraces.cpp \
   support/cleanse.cpp \
   sync.cpp \
   threadinterrupt.cpp \
@@ -454,7 +503,7 @@ libe4coin_util_a_SOURCES = \
   utilmoneystr.cpp \
   utilstrencodings.cpp \
   utiltime.cpp \
-  $(E4COIN_CORE_H)
+  $(BITCOIN_CORE_H)
 
 if GLIBC_BACK_COMPAT
 libe4coin_util_a_SOURCES += compat/glibc_compat.cpp
@@ -462,63 +511,63 @@ AM_LDFLAGS += -Wl,--wrap=log2f -Wl,--wrap=__divmoddi4
 endif
 
 # cli: shared between e4coin-cli and e4coin-qt
-libe4coin_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(E4COIN_INCLUDES)
+libe4coin_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libe4coin_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libe4coin_cli_a_SOURCES = \
   rpc/client.cpp \
-  $(E4COIN_CORE_H)
+  $(BITCOIN_CORE_H)
 
 nodist_libe4coin_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
 # e4coind binary #
 e4coind_SOURCES = e4coind.cpp
-e4coind_CPPFLAGS = $(AM_CPPFLAGS) $(E4COIN_INCLUDES)
+e4coind_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 e4coind_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-e4coind_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+e4coind_LDFLAGS = $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
 e4coind_SOURCES += e4coind-res.rc
 endif
 
 e4coind_LDADD = \
-  $(LIBE4COIN_SERVER) \
-  $(LIBE4COIN_COMMON) \
+  $(LIBBITCOIN_SERVER) \
+  $(LIBBITCOIN_COMMON) \
   $(LIBUNIVALUE) \
-  $(LIBE4COIN_UTIL) \
-  $(LIBE4COIN_WALLET) \
-  $(LIBE4COIN_ZMQ) \
-  $(LIBE4COIN_CONSENSUS) \
-  $(LIBE4COIN_CRYPTO) \
+  $(LIBBITCOIN_UTIL) \
+  $(LIBBITCOIN_WALLET) \
+  $(LIBBITCOIN_ZMQ) \
+  $(LIBBITCOIN_CONSENSUS) \
+  $(LIBBITCOIN_CRYPTO) \
   $(LIBLEVELDB) \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-e4coind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) $(BLS_LIBS)
+e4coind_LDADD += $(BACKTRACE_LIB) $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) $(BLS_LIBS)
 
 # e4coin-cli binary #
 e4coin_cli_SOURCES = e4coin-cli.cpp
-e4coin_cli_CPPFLAGS = $(AM_CPPFLAGS) $(E4COIN_INCLUDES) $(EVENT_CFLAGS)
+e4coin_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
 e4coin_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-e4coin_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+e4coin_cli_LDFLAGS = $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
 e4coin_cli_SOURCES += e4coin-cli-res.rc
 endif
 
 e4coin_cli_LDADD = \
-  $(LIBE4COIN_CLI) \
+  $(LIBBITCOIN_CLI) \
   $(LIBUNIVALUE) \
-  $(LIBE4COIN_UTIL) \
-  $(LIBE4COIN_CRYPTO)
-e4coin_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS) $(BLS_LIBS)
+  $(LIBBITCOIN_UTIL) \
+  $(LIBBITCOIN_CRYPTO)
+e4coin_cli_LDADD += $(BACKTRACE_LIB) $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS) $(BLS_LIBS)
 #
 
 # e4coin-tx binary #
 e4coin_tx_SOURCES = e4coin-tx.cpp
-e4coin_tx_CPPFLAGS = $(AM_CPPFLAGS) $(E4COIN_INCLUDES)
+e4coin_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 e4coin_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-e4coin_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+e4coin_tx_LDFLAGS = $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
 e4coin_tx_SOURCES += e4coin-tx-res.rc
@@ -526,17 +575,17 @@ endif
 
 e4coin_tx_LDADD = \
   $(LIBUNIVALUE) \
-  $(LIBE4COIN_COMMON) \
-  $(LIBE4COIN_UTIL) \
-  $(LIBE4COIN_CONSENSUS) \
-  $(LIBE4COIN_CRYPTO) \
+  $(LIBBITCOIN_COMMON) \
+  $(LIBBITCOIN_UTIL) \
+  $(LIBBITCOIN_CONSENSUS) \
+  $(LIBBITCOIN_CRYPTO) \
   $(LIBSECP256K1)
 
-e4coin_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS) $(BLS_LIBS)
+e4coin_tx_LDADD += $(BACKTRACE_LIB) $(BOOST_LIBS) $(CRYPTO_LIBS) $(BLS_LIBS)
 #
 
 # e4coinconsensus library #
-if BUILD_E4COIN_LIBS
+if BUILD_BITCOIN_LIBS
 include_HEADERS = script/e4coinconsensus.h
 libe4coinconsensus_la_SOURCES = $(crypto_libe4coin_crypto_a_SOURCES) $(libe4coin_consensus_a_SOURCES)
 
@@ -546,7 +595,7 @@ endif
 
 libe4coinconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
 libe4coinconsensus_la_LIBADD = $(LIBSECP256K1) $(BLS_LIBS)
-libe4coinconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_E4COIN_INTERNAL
+libe4coinconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_BITCOIN_INTERNAL
 libe4coinconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 
 endif

@@ -1,10 +1,11 @@
-// Copyright (c) 2015 The dash Core developers
+// Copyright (c) 2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "bench.h"
 
 #include "key.h"
+#include "stacktraces.h"
 #include "validation.h"
 #include "util.h"
 
@@ -16,6 +17,9 @@ void CleanupBLSDkgTests();
 int
 main(int argc, char** argv)
 {
+    RegisterPrettySignalHandlers();
+    RegisterPrettyTerminateHander();
+
     ECC_Start();
     ECCVerifyHandle verifyHandle;
 

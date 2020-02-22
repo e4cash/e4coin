@@ -172,7 +172,7 @@
         <translation>تأكيد تشفير المحفظة</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR E4COIN&lt;/b&gt;!</source>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR E4CN&lt;/b&gt;!</source>
         <translation>تحذير: إذا قمت بتشفير محفظتك وفقدت كلمة المرور الخاص بك, ستفقد كل عملات داش الخاصة بك</translation>
     </message>
     <message>
@@ -240,7 +240,7 @@
     </message>
 </context>
 <context>
-    <name>e4coinGUI</name>
+    <name>BitcoinGUI</name>
     <message>
         <source>A fatal error occurred. e4Coin Core can no longer continue safely and will quit.</source>
         <translation>خطأ فادح حدث . لا يمكن اتمام داش بامان سيتم الخروج</translation>
@@ -436,14 +436,6 @@
     <message>
         <source>Open configuration file</source>
         <translation>افتح ملف التهيئة</translation>
-    </message>
-    <message>
-        <source>Open &amp;Masternode Configuration File</source>
-        <translation>فتح ملف تكوين العقدة الرئيسية</translation>
-    </message>
-    <message>
-        <source>Open Masternode configuration file</source>
-        <translation>افتح ملف تهيئة العقدة الرئيسية</translation>
     </message>
     <message>
         <source>Show Automatic &amp;Backups</source>
@@ -650,10 +642,6 @@
 </context>
 <context>
     <name>ClientModel</name>
-    <message>
-        <source>Total: %1 (PS compatible: %2 / Enabled: %3)</source>
-        <translation>المجموع: %1 (متوافق مع بس: %2 / ممكن: %3)</translation>
-    </message>
     <message>
         <source>Network Alert</source>
         <translation>تنبيه الشبكة</translation>
@@ -971,7 +959,7 @@
         <translation>معلومات الإرسال المخفي</translation>
     </message>
     <message>
-        <source>&lt;h3&gt;PrivateSend Basics&lt;/h3&gt; PrivateSend gives you true financial privacy by obscuring the origins of your funds. All the e4Coin in your wallet is comprised of different "inputs" which you can think of as separate, discrete coins.&lt;br&gt; PrivateSend uses an innovative process to mix your inputs with the inputs of two other people, without having your coins ever leave your wallet. You retain control of your money at all times.&lt;hr&gt; &lt;b&gt;The PrivateSend process works like this:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;PrivateSend begins by breaking your transaction inputs down into standard denominations. These denominations are 0.001 E4COIN, 0.01 E4COIN, 0.1 E4COIN, 1 E4COIN and 10 E4COIN -- sort of like the paper money you use every day.&lt;/li&gt; &lt;li&gt;Your wallet then sends requests to specially configured software nodes on the network, called "masternodes." These masternodes are informed then that you are interested in mixing a certain denomination. No identifiable information is sent to the masternodes, so they never know "who" you are.&lt;/li&gt; &lt;li&gt;When two other people send similar messages, indicating that they wish to mix the same denomination, a mixing session begins. The masternode mixes up the inputs and instructs all three users' wallets to pay the now-transformed input back to themselves. Your wallet pays that denomination directly to itself, but in a different address (called a change address).&lt;/li&gt; &lt;li&gt;In order to fully obscure your funds, your wallet must repeat this process a number of times with each denomination. Each time the process is completed, it's called a "round." Each round of PrivateSend makes it exponentially more difficult to determine where your funds originated.&lt;/li&gt; &lt;li&gt;This mixing process happens in the background without any intervention on your part. When you wish to make a transaction, your funds will already be anonymized. No additional waiting is required.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;IMPORTANT:&lt;/b&gt; Your wallet only contains 1000 of these "change addresses." Every time a mixing event happens, up to 9 of your addresses are used up. This means those 1000 addresses last for about 100 mixing events. When 900 of them are used, your wallet must create more addresses. It can only do this, however, if you have automatic backups enabled.&lt;br&gt; Consequently, users who have backups disabled will also have PrivateSend disabled. &lt;hr&gt;For more information, see the &lt;a href="https://docs.e4coin.org/en/latest/wallets/e4coincore/privatesend-instantsend.html"&gt;PrivateSend documentation&lt;/a&gt;.</source>
+        <source>&lt;h3&gt;PrivateSend Basics&lt;/h3&gt; PrivateSend gives you true financial privacy by obscuring the origins of your funds. All the e4Coin in your wallet is comprised of different "inputs" which you can think of as separate, discrete coins.&lt;br&gt; PrivateSend uses an innovative process to mix your inputs with the inputs of two other people, without having your coins ever leave your wallet. You retain control of your money at all times.&lt;hr&gt; &lt;b&gt;The PrivateSend process works like this:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;PrivateSend begins by breaking your transaction inputs down into standard denominations. These denominations are 0.001 E4CN, 0.01 E4CN, 0.1 E4CN, 1 E4CN and 10 E4CN -- sort of like the paper money you use every day.&lt;/li&gt; &lt;li&gt;Your wallet then sends requests to specially configured software nodes on the network, called "masternodes." These masternodes are informed then that you are interested in mixing a certain denomination. No identifiable information is sent to the masternodes, so they never know "who" you are.&lt;/li&gt; &lt;li&gt;When two other people send similar messages, indicating that they wish to mix the same denomination, a mixing session begins. The masternode mixes up the inputs and instructs all three users' wallets to pay the now-transformed input back to themselves. Your wallet pays that denomination directly to itself, but in a different address (called a change address).&lt;/li&gt; &lt;li&gt;In order to fully obscure your funds, your wallet must repeat this process a number of times with each denomination. Each time the process is completed, it's called a "round." Each round of PrivateSend makes it exponentially more difficult to determine where your funds originated.&lt;/li&gt; &lt;li&gt;This mixing process happens in the background without any intervention on your part. When you wish to make a transaction, your funds will already be anonymized. No additional waiting is required.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;IMPORTANT:&lt;/b&gt; Your wallet only contains 1000 of these "change addresses." Every time a mixing event happens, up to 9 of your addresses are used up. This means those 1000 addresses last for about 100 mixing events. When 900 of them are used, your wallet must create more addresses. It can only do this, however, if you have automatic backups enabled.&lt;br&gt; Consequently, users who have backups disabled will also have PrivateSend disabled. &lt;hr&gt;For more information, see the &lt;a href="https://docs.e4coin.org/en/latest/wallets/e4coincore/privatesend-instantsend.html"&gt;PrivateSend documentation&lt;/a&gt;.</source>
         <translation>&lt;h3&gt;أساسيات الإرسال المخفي &lt;/h3&gt; يمنحك الإرسال المخفي الخصوصية المالية الحقيقية عن طريق حجب أصول أموالك. تتألف جميع داش في محفظتك من "مدخلات" مختلفة يمكنك التفكير فيها على أنها عملات معدنية منفصلة ومنفصلة. &lt;br&gt;يستخدم الإرسال المخفي عملية مبتكرة لخلط مدخلات الخاصة بك مع مدخلات شخصين آخرين ، دون أن تترك العملات المعدنية الخاصة بك من أي وقت مضى محفظتك. أنت تحتفظ بالسيطرة على أموالك في جميع الأوقات.&lt;hr&gt;  &lt;b&gt; تعمل عملية الإرسال المخفي على النحو التالي: &lt;/b&gt;&lt;ol type="1"&gt;&lt;li&gt;يبدأ الإرسال المخفي عن طريق كسر مدخلات الخاصة بالمعاملات إلى فئات قياسية. هذه الفئات هي 0.001 داش ، 0.01 داش ، 0.1 داش ، 1 داش و 10 داش - نوع من مثل النقود الورقية التي تستخدمها كل يوم. &lt;/li&gt;  عندئذٍ ترسل محفظتك طلبات إلى عقد برامج تم تكوينها خصيصًا على الشبكة ، تُسمى "ماسترنود". يتم إخبار هذه الألفاظ بأنك مهتم بخلط فئة معينة. يتم إرسال أي معلومات يمكن تحديدها إلى جميع ماسترنود ، لذلك لا يعرفون أبدا "من" أنت&lt;li&gt;  &lt;li&gt;  عندما يرسل شخصان آخران رسائل مشابهة ، تشير إلى أنهما يرغبان في خلط نفس المذهب ، تبدأ جلسة الخلط. يمزج متاسترنود يصل مدخلات ويكلف محافظ المستخدمين الثلاثة لدفع مدخلات تحولت الآن إلى أنفسهم. تدفع محفظتك تلك التسمية مباشرة لنفسها ، ولكن في عنوان مختلف (يسمى عنوان التغيير). &lt;li&gt;&lt;/li&gt;  من أجل حجب أموالك بشكل كامل ، يجب أن تكرر محفظتك هذه العملية عدة مرات مع كل فئة. في كل مرة يتم الانتهاء من العملية ، يطلق عليها "جولة". كل جولة من الإرسال المخفي تجعل من الصعب بشكل كبير تحديد المكان الذي نشأت فيه أموالك.&lt;/li&gt;  &lt;li&gt; تحدث عملية الاختلاط هذه في الخلفية دون أي تدخل من جانبك. عندما ترغب في إجراء معاملة ، ستكون أموالك مجهولة المصدر بالفعل. مطلوب أي انتظار إضافي. &lt;/li&gt;&lt;/ol&gt;&lt;hr&gt;&lt;b&gt;مهم &lt;/b&gt; تحتوي محفظتك فقط على 1000 من "عناوين التغيير" هذه. في كل مرة يحدث فيها حدث خلط ، يتم استخدام ما يصل إلى 9 عناوين من عناوينك. هذا يعني أن 1000 عنوان تدوم لحوالي 100 حدث خلط. عند استخدام 900 منهم ، يجب أن تنشئ محفظتك المزيد من العناوين. يمكن فقط القيام بذلك ، ومع ذلك ، إذا قمت بتمكين النسخ الاحتياطي التلقائي.&lt;br&gt; وبالتالي ، سيتم تعطيل الإرسال المخفي أيضًا للمستخدمين الذين لديهم نسخ احتياطية معطلة.&lt;hr&gt; لمزيد من المعلومات ، راجع&lt;a href="https://docs.e4coin.org/en/latest/wallets/e4coincore/privatesend-instantsend.html"&gt; وثائق الإرسال المخفي &lt;/a&gt;</translation>
     </message>
 </context>
@@ -990,8 +978,16 @@
         <translation>بما انه هذه اول مرة لانطلاق هذا البرنامج, فيمكنك ان تختار اين سيخزن %1 بياناته</translation>
     </message>
     <message>
-        <source>%1 will download and store a copy of the e4Coin block chain. At least %2GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
-        <translation>سيعمل%1 على تنزيل نسخة من سلسلة كتلة داش وتخزينها. سيتم تخزين ما لا يقل عن %2 جيغابايت من البيانات في هذا الدليل ، وسيزداد بمرور الوقت. سيتم أيضًا تخزين المحفظة في هذا الدليل.</translation>
+        <source>When you click OK, %1 will begin to download and process the full %4 block chain (%2GB) starting with the earliest transactions in %3 when %4 initially launched.</source>
+        <translation>عند النقر على "موافق" ، سيبدأ %1 في تنزيل ومعالجة سلسلة الكتل %4 الكاملة (%2 جيجابايت) بدءًا من المعاملات الأقدم في %3 عند تشغيل %4 في البداية.</translation>
+    </message>
+    <message>
+        <source>This initial synchronisation is very demanding, and may expose hardware problems with your computer that had previously gone unnoticed. Each time you run %1, it will continue downloading where it left off.</source>
+        <translation>تُعد هذه المزامنة الأولية أمرًا شاقًا للغاية، وقد تعرض جهاز الكمبيوتر الخاص بك للمشاكل الذي لم يلاحظها أحد سابقًا. في كل مرة تقوم فيها بتشغيل %1، سيتابع التحميل من حيث تم التوقف.</translation>
+    </message>
+    <message>
+        <source>If you have chosen to limit block chain storage (pruning), the historical data must still be downloaded and processed, but will be deleted afterward to keep your disk usage low.</source>
+        <translation>إذا كنت قد اخترت تقييد تخزين سلسلة الكتل (التجريد)، فيجب تحميل البيانات القديمة ومعالجتها، ولكن سيتم حذفها بعد ذلك للحفاظ على انخفاض استخدام القرص.</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -1000,6 +996,22 @@
     <message>
         <source>Use a custom data directory:</source>
         <translation>استخدام دليل بيانات مخصص:</translation>
+    </message>
+    <message>
+        <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
+        <translation>سيتم تخزين %1 جيجابايت على الأقل من البيانات في هذا الدليل، وستنمو مع الوقت.</translation>
+    </message>
+    <message>
+        <source>Approximately %1 GB of data will be stored in this directory.</source>
+        <translation>سيتم تخزين %1 جيجابايت تقريباً من البيانات في هذا الدليل.</translation>
+    </message>
+    <message>
+        <source>%1 will download and store a copy of the e4Coin block chain.</source>
+        <translation>سيقوم %1 بتنزيل نسخة من سلسلة كتل بتكوين وتخزينها.</translation>
+    </message>
+    <message>
+        <source>The wallet will also be stored in this directory.</source>
+        <translation>سوف يتم تخزين المحفظة في هذا الدليل.</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" cannot be created.</source>
@@ -1025,76 +1037,20 @@
         <translation>نمودج</translation>
     </message>
     <message>
-        <source>My Masternodes</source>
-        <translation>ماسترنود حقي</translation>
-    </message>
-    <message>
-        <source>Note: Status of your masternodes in local wallet can potentially be slightly incorrect.&lt;br /&gt;Always wait for wallet to sync additional data and then double check from another node&lt;br /&gt;if your masternode should be running but you still do not see "ENABLED" in "Status" field.</source>
-        <translation>ملاحظة: من المحتمل أن تكون حالة رموزك في المحفظة المحلية غير صحيحة بعض الشيء.&lt;br /&gt;انتظر دائما للمحفظة لمزامنة بيانات إضافية ومن ثم تحقق مرة أخرى من عقدة أخرى&lt;br /&gt; إذا كان يجب تشغيل ماسترنود الخاص بك ولكنك لا تزال لا ترى "متاحة" في حقل "الحالة".</translation>
-    </message>
-    <message>
-        <source>Alias</source>
-        <translation>الاسم المستعار</translation>
-    </message>
-    <message>
         <source>Address</source>
         <translation>عنوان</translation>
-    </message>
-    <message>
-        <source>Protocol</source>
-        <translation>بروتوكول</translation>
     </message>
     <message>
         <source>Status</source>
         <translation>الحالة.</translation>
     </message>
     <message>
-        <source>Active</source>
-        <translation>نشيط</translation>
-    </message>
-    <message>
-        <source>Last Seen</source>
-        <translation>آخر زيارة</translation>
-    </message>
-    <message>
         <source>Payee</source>
         <translation>المستفيد</translation>
     </message>
     <message>
-        <source>S&amp;tart alias</source>
-        <translation>بدأ الإسم المستعار</translation>
-    </message>
-    <message>
-        <source>Start &amp;all</source>
-        <translation>بدأ الكل</translation>
-    </message>
-    <message>
-        <source>Start &amp;MISSING</source>
-        <translation>بدأ المفقود</translation>
-    </message>
-    <message>
-        <source>&amp;Update status</source>
-        <translation>تحديث الحالة</translation>
-    </message>
-    <message>
-        <source>Show additional Masternode information</source>
-        <translation>عرض معلومات ماسترنود إضافية</translation>
-    </message>
-    <message>
-        <source>Show &amp;Info...</source>
-        <translation>إظهار المعلومات</translation>
-    </message>
-    <message>
-        <source>Status will be updated automatically in (sec):</source>
-        <translation>سيتم تحديث الحالة تلقائيا خلال (تواني):</translation>
-    </message>
-    <message>
         <source>0</source>
         <translation>0</translation>
-    </message>
-    <message>
-        <source>All Masternodes</source>
-        <translation>جميع ماسترنود</translation>
     </message>
     <message>
         <source>Filter List:</source>
@@ -1107,10 +1063,6 @@
     <message>
         <source>Node Count:</source>
         <translation>عدد نود</translation>
-    </message>
-    <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note: This list represents the legacy and non-deterministic masternode list. It is only active as long as DIP3 has not been fully activated. After SPORK15 activation, this list will be empty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ملاحظة: تمثل هذه القائمة قائمة ماسترنود القديمة وغير المحددة. وهو نشط فقط طالما أن DIP3 لم يتم تنشيطه بالكامل. بعد تنشيط SPORK15 ، ستكون هذه القائمة فارغة.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>DIP3 Masternodes</source>
@@ -1135,14 +1087,6 @@
     <message>
         <source>Operator Reward</source>
         <translation>مكافأة المشغل</translation>
-    </message>
-    <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note: This list is not active yet and only for informational purposes. The network is still running in compatibility mode, which means that the non-deterministic masternode list is still active. Only after SPORK15 activation, this list will become the active one. Also, the values in the payment related fields are not used at the moment, but still updated for every block. Please ignore this until SPORK15 activation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ملاحظة: هذه القائمة ليست نشطة حتى الآن ولأغراض المعلومات فقط. لا تزال الشبكة قيد التشغيل في وضع التوافق ، مما يعني أن قائمة ماسترنود غير الحتمية لا تزال نشطة. فقط بعد تنشيط SPORK15 ، ستصبح هذه القائمة نشطة. أيضًا ، لا يتم استخدام القيم في الحقول المرتبطة بالدفع في الوقت الحالي ، ولكن لا تزال محدّثة لكل كتلة. يرجى تجاهل هذا حتى تفعيل SPORK15.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <source>Start alias</source>
-        <translation>بدأ الإسم المستعار</translation>
     </message>
     <message>
         <source>Copy ProTx Hash</source>
@@ -1179,66 +1123,6 @@
     <message>
         <source>NONE</source>
         <translation>لا شيء</translation>
-    </message>
-    <message>
-        <source>Confirm masternode start</source>
-        <translation>تأكيد بداية ماسترنود</translation>
-    </message>
-    <message>
-        <source>Confirm all masternodes start</source>
-        <translation>تأكيد لبدأ كل ماسترنود</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to start ALL masternodes?</source>
-        <translation>هل أنت متأكد أنك تريد أن تبدأ جميع ماسترنود؟</translation>
-    </message>
-    <message>
-        <source>Command is not available right now</source>
-        <translation>الأمر غير متاح الآن</translation>
-    </message>
-    <message>
-        <source>You can't use this command until masternode list is synced</source>
-        <translation>لا يمكنك استخدام هذا الأمر حتى تتم مزامنة قائمة ماسترنود</translation>
-    </message>
-    <message>
-        <source>Confirm missing masternodes start</source>
-        <translation>تأكيد ماسترنود في عداد المفقودين تبدأ</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to start MISSING masternodes?</source>
-        <translation>هل أنت متأكد أنك تريد أن تبدأ ماسترنود مفقود؟</translation>
-    </message>
-    <message>
-        <source>Additional information for Masternode %1</source>
-        <translation>معلومات إضافية عن ماسترنود %1</translation>
-    </message>
-    <message>
-        <source>Masternode Private Key</source>
-        <translation>مفتاح الخاص لماسترنود</translation>
-    </message>
-    <message>
-        <source>Private Key</source>
-        <translation>مفتاح سري</translation>
-    </message>
-    <message>
-        <source>Collateral</source>
-        <translation>جانبية</translation>
-    </message>
-    <message>
-        <source>IP</source>
-        <translation>IP</translation>
-    </message>
-    <message>
-        <source>Version</source>
-        <translation>الإصدار</translation>
-    </message>
-    <message>
-        <source>Unknown</source>
-        <translation>غير معرف</translation>
-    </message>
-    <message>
-        <source>Sentinel</source>
-        <translation>الحارس</translation>
     </message>
     <message>
         <source>Additional information for DIP3 Masternode %1</source>
@@ -1731,7 +1615,7 @@ https://www.transifex.com/projects/p/e4coin/</translation>
         <translation>الكمية و الجولات</translation>
     </message>
     <message>
-        <source>0 E4COIN / 0 Rounds</source>
+        <source>0 E4CN / 0 Rounds</source>
         <translation>0 داش / 0 جولات</translation>
     </message>
     <message>
@@ -2002,16 +1886,8 @@ https://www.transifex.com/projects/p/e4coin/</translation>
 <context>
     <name>QObject</name>
     <message>
-        <source>e4Coin Core</source>
-        <translation>جوهر الداش</translation>
-    </message>
-    <message>
         <source>%1 didn't yet exit safely...</source>
         <translation>%1 لم يخرج بعد بأمان...</translation>
-    </message>
-    <message>
-        <source>Error reading masternode configuration file: %1</source>
-        <translation>خطأ في قراءة ملف تهيئة ماسترنود :%1</translation>
     </message>
     <message>
         <source>Amount</source>
@@ -2809,11 +2685,11 @@ https://www.transifex.com/projects/p/e4coin/</translation>
         <translation>الإسال الفوري</translation>
     </message>
     <message>
-        <source>If the custom fee is set to 1000 duffs and the transaction is only 250 bytes, then "per kilobyte" only pays 250 duffs in fee,&lt;br /&gt;while "at least" pays 1000 duffs. For transactions bigger than a kilobyte both pay by kilobyte.</source>
+        <source>If the custom fee is set to 1000 real and the transaction is only 250 bytes, then "per kilobyte" only pays 250 real in fee,&lt;br /&gt;while "at least" pays 1000 real. For transactions bigger than a kilobyte both pay by kilobyte.</source>
         <translation>إذا تم تعيين الرسوم الجمركية على 1000 دافع وكانت المعاملة 250 بايتًا فقط ، فإن "كل كيلوبايت" يدفع 250 جنيهًا فقط رسومًا ،&lt;br /&gt; بينما "على الأقل" يدفع 1000 دفين. لمعاملات أكبر من كيلوبايت تدفع كل من كيلوبايت.</translation>
     </message>
     <message>
-        <source>If the custom fee is set to 1000 duffs and the transaction is only 250 bytes, then "per kilobyte" only pays 250 duffs in fee,&lt;br /&gt;while "total at least" pays 1000 duffs. For transactions bigger than a kilobyte both pay by kilobyte.</source>
+        <source>If the custom fee is set to 1000 real and the transaction is only 250 bytes, then "per kilobyte" only pays 250 real in fee,&lt;br /&gt;while "total at least" pays 1000 real. For transactions bigger than a kilobyte both pay by kilobyte.</source>
         <translation>إذا تم تعيين الرسوم الجمركية على 1000 دافع وكانت المعاملة 250 بايتًا فقط ، فإن "كل كيلوبايت" يدفع 250 جنيهًا فقط رسومًا ، &lt;br /&gt; بينما "المجموع على الأقل" يدفع 1000 دفين. لمعاملات أكبر من كيلوبايت تدفع كل من كيلوبايت.</translation>
     </message>
     <message>
@@ -3832,7 +3708,7 @@ https://www.transifex.com/projects/p/e4coin/</translation>
         <translation>إرسال Coins</translation>
     </message>
     <message>
-        <source>InstantSend doesn't support sending values that high yet. Transactions are currently limited to %1 E4COIN.</source>
+        <source>InstantSend doesn't support sending values that high yet. Transactions are currently limited to %1 E4CN.</source>
         <translation>لا يدعم الإرسال الفوري  إرسال قيم عالية حتى الآن. تقتصر المعاملات حاليًا على%1 داش .</translation>
     </message>
     <message>
@@ -3924,10 +3800,6 @@ https://www.transifex.com/projects/p/e4coin/</translation>
     <message>
         <source>Warning: We do not appear to fully agree with our peers! You may need to upgrade, or other nodes may need to upgrade.</source>
         <translation>تحذير: لا يبدو أننا نتفق تمامًا مع نظرائنا! قد تحتاج إلى الترقية ، أو قد تحتاج العقد الأخرى إلى الترقية.</translation>
-    </message>
-    <message>
-        <source>You must specify a masternodeprivkey in the configuration. Please see documentation for help.</source>
-        <translation>يجب عليك تحديد masternodeprivkey في التكوين. يرجى الاطلاع على الوثائق مساعدة.</translation>
     </message>
     <message>
         <source>Accept command line and JSON-RPC commands</source>
@@ -4048,10 +3920,6 @@ https://www.transifex.com/projects/p/e4coin/</translation>
     <message>
         <source>Bind to given address and whitelist peers connecting to it. Use [host]:port notation for IPv6</source>
         <translation>ربط العنوان المعطى وأقرانه في القائمة البيضاء بالاتصال به. استخدم [host]: تدوين المنفذ لـ IPv6</translation>
-    </message>
-    <message>
-        <source>Bind to given address to listen for JSON-RPC connections. Use [host]:port notation for IPv6. This option can be specified multiple times (default: bind to all interfaces)</source>
-        <translation>ربط عنوان معين للاستماع إلى اتصالات JSON-RPC. استخدم [host]: تدوين المنفذ لـ IPv6. يمكن تحديد هذا الخيار عدة مرات (افتراضي: ربط لجميع جهة النعامل)</translation>
     </message>
     <message>
         <source>Create new files with system default permissions, instead of umask 077 (only effective with disabled wallet functionality)</source>
@@ -4194,10 +4062,6 @@ https://www.transifex.com/projects/p/e4coin/</translation>
         <translation>فشل تحميل ذاكرة التخزين المؤقتة من</translation>
     </message>
     <message>
-        <source>Failed to load masternode payments cache from</source>
-        <translation>أخفق تحميل ذاكرة التخزين المؤقت لمدفوعات ماسترنود من</translation>
-    </message>
-    <message>
         <source>Found enough users, signing ( waiting %s )</source>
         <translation>العثور على عدد كافٍ من المستخدمين ، والتوقيع (الانتظار %s)</translation>
     </message>
@@ -4242,14 +4106,6 @@ https://www.transifex.com/projects/p/e4coin/</translation>
         <translation>رصيد غير كاف.</translation>
     </message>
     <message>
-        <source>Invalid -onion address: '%s'</source>
-        <translation>عنوان - صالح غير صالح: '%s'</translation>
-    </message>
-    <message>
-        <source>Invalid -proxy address: '%s'</source>
-        <translation>عنوان البروكسي غير صحيح : '%s'</translation>
-    </message>
-    <message>
         <source>Invalid amount for -paytxfee=&lt;amount&gt;: '%s' (must be at least %s)</source>
         <translation>مبلغ غير صالح لـ -paytxfee = : '%s' &lt;amount&gt; (يجب أن يكون على الأقل %s)</translation>
     </message>
@@ -4286,16 +4142,8 @@ https://www.transifex.com/projects/p/e4coin/</translation>
         <translation>جارٍ تحميل ذاكرة التخزين المؤقت في ماسترنود ...</translation>
     </message>
     <message>
-        <source>Loading masternode payment cache...</source>
-        <translation>جارٍ تحميل ذاكرة التخزين المؤقت للدفع ماسترنود ...</translation>
-    </message>
-    <message>
         <source>Lock is already in place.</source>
         <translation>قفل بالفعل في المكان.</translation>
-    </message>
-    <message>
-        <source>Lock masternodes from masternode configuration file (default: %u)</source>
-        <translation>قفل ماسترنود من ملف تهيئة ماسترنود (الإعداد الافتراضي: %u)</translation>
     </message>
     <message>
         <source>Maximum per-connection receive buffer, &lt;n&gt;*1000 bytes (default: %u)</source>
@@ -4332,10 +4180,6 @@ https://www.transifex.com/projects/p/e4coin/</translation>
     <message>
         <source>Only connect to nodes in network &lt;net&gt; (ipv4, ipv6 or onion)</source>
         <translation>فقط الاتصال بالعقد في الشبكة &lt;net&gt;  (ipv4, ipv6 or onion)</translation>
-    </message>
-    <message>
-        <source>Port: %d</source>
-        <translation>Port: %d</translation>
     </message>
     <message>
         <source>Prepend debug output with timestamp (default: %u)</source>
@@ -4378,10 +4222,6 @@ https://www.transifex.com/projects/p/e4coin/</translation>
         <translation>تحديد مهلة الاتصال بالمللي ثانية (الحد الأدنى: 1 ، القيمة الافتراضية: %d)</translation>
     </message>
     <message>
-        <source>Specify masternode configuration file (default: %s)</source>
-        <translation>تحديد ملف تهيئة ماسترنود (الإعداد الافتراضي: %s)</translation>
-    </message>
-    <message>
         <source>Specify pid file (default: %s)</source>
         <translation>تحديد ملف pid (الافتراضي: %s)</translation>
     </message>
@@ -4390,20 +4230,8 @@ https://www.transifex.com/projects/p/e4coin/</translation>
         <translation>اقضي على تغيير غير مؤكد عند إرسال المعاملات (القيمة الافتراضية: %u)</translation>
     </message>
     <message>
-        <source>Submitted following entries to masternode: %u / %d</source>
-        <translation>يتم إرسال الإدخالات التالية إلى ماسترنود : %u / %d</translation>
-    </message>
-    <message>
-        <source>Submitted to masternode, waiting for more entries ( %u / %d ) %s</source>
-        <translation>تم إرساله إلى ماسترنود ، في انتظار المزيد من الإدخالات ( %u / %d) %s</translation>
-    </message>
-    <message>
         <source>Submitted to masternode, waiting in queue %s</source>
         <translation>تم إرساله إلى ماسترنود ، في الانتظار في قائمة الانتظار %s</translation>
-    </message>
-    <message>
-        <source>Synchroning blockchain...</source>
-        <translation>تزامن بلوكشين ...</translation>
     </message>
     <message>
         <source>Synchronization failed</source>
@@ -4412,10 +4240,6 @@ https://www.transifex.com/projects/p/e4coin/</translation>
     <message>
         <source>Synchronization finished</source>
         <translation>انتهى التزامن</translation>
-    </message>
-    <message>
-        <source>Synchronizing masternodes...</source>
-        <translation>تزامن ماسترنود...</translation>
     </message>
     <message>
         <source>This is not a Masternode.</source>
@@ -4486,10 +4310,6 @@ https://www.transifex.com/projects/p/e4coin/</translation>
         <translation>سيعيد المحاولة ...</translation>
     </message>
     <message>
-        <source>Invalid masternodeprivkey. Please see documenation.</source>
-        <translation>ماسترنود غير صحيح. يرجى الاطلاع على الوثائق</translation>
-    </message>
-    <message>
         <source>Can't find random Masternode.</source>
         <translation>لا يمكن العثور على ماسترنود عشوائي.</translation>
     </message>
@@ -4498,16 +4318,8 @@ https://www.transifex.com/projects/p/e4coin/</translation>
         <translation>لا يمكن الدمج  أثناء المزامنة قيد التقدم.</translation>
     </message>
     <message>
-        <source>Could not parse masternode.conf</source>
-        <translation>لا يمكن تحليل masternode.conf</translation>
-    </message>
-    <message>
         <source>Invalid netmask specified in -whitelist: '%s'</source>
         <translation>قناع الشبكة غير صالح محدد في-القائمة البيضاء: '%s'</translation>
-    </message>
-    <message>
-        <source>Invalid port detected in masternode.conf</source>
-        <translation>تم اكتشاف منفذ غير صالح في masternode.conf</translation>
     </message>
     <message>
         <source>Invalid script detected.</source>
@@ -4578,7 +4390,7 @@ https://www.transifex.com/projects/p/e4coin/</translation>
         <translation>إذا &lt;category&gt; لا يتم توفير أو إذا &lt;category&gt; = 1 ، إخراج كافة معلومات التصحيح</translation>
     </message>
     <message>
-        <source>InstantSend doesn't support sending values that high yet. Transactions are currently limited to %1 E4COIN.</source>
+        <source>InstantSend doesn't support sending values that high yet. Transactions are currently limited to %1 E4CN.</source>
         <translation>لا يدعم الإرسال الغوري إرسال قيم عالية حتى الآن. تقتصر المعاملات حاليًا على%1 داش.</translation>
     </message>
     <message>
@@ -4686,16 +4498,8 @@ https://www.transifex.com/projects/p/e4coin/</translation>
         <translation>تحتاج إلى إعادة إنشاء قاعدة البيانات باستخدام -reindex للعودة إلى الوضعية الغير مجردة. هذا سوف يعيد تحميل سلسلة الكتل بأكملها</translation>
     </message>
     <message>
-        <source>(%d could be used only on mainnet)</source>
-        <translation>(%d يمكن استخدامها فقط على mainnet)</translation>
-    </message>
-    <message>
         <source>(default: %u)</source>
         <translation>(القيمة الافتراضية: %u)</translation>
-    </message>
-    <message>
-        <source>(must be %d for mainnet)</source>
-        <translation>(يجب أن يكون %d لـ mainnet)</translation>
     </message>
     <message>
         <source>-maxmempool must be at least %d MB</source>
@@ -4778,10 +4582,6 @@ https://www.transifex.com/projects/p/e4coin/</translation>
         <translation>فشل تحميل ذاكرة التخزين المؤقت</translation>
     </message>
     <message>
-        <source>Failed to parse host:port string</source>
-        <translation>فشل تحليل المضيف: سلسلة المنفذ</translation>
-    </message>
-    <message>
         <source>Fee (in %s/kB) to add to transactions you send (default: %s)</source>
         <translation>الرسوم (في %s / kB) لإضافتها إلى المعاملات التي ترسلها (الافتراضي: %s)</translation>
     </message>
@@ -4810,16 +4610,8 @@ https://www.transifex.com/projects/p/e4coin/</translation>
         <translation>آخر إجراء الإرسال المخفي ناجح كان حديث للغاية.</translation>
     </message>
     <message>
-        <source>Line: %d</source>
-        <translation>سطر: %d</translation>
-    </message>
-    <message>
         <source>Loading InstantSend data cache...</source>
         <translation>جارٍ تحميل ذاكرة التخزين المؤقت لبيانات الإرسال الفوري ...</translation>
-    </message>
-    <message>
-        <source>Loading addresses...</source>
-        <translation>تحميل العنوان</translation>
     </message>
     <message>
         <source>Loading block index...</source>
@@ -4848,10 +4640,6 @@ https://www.transifex.com/projects/p/e4coin/</translation>
     <message>
         <source>Make the wallet broadcast transactions</source>
         <translation>إنتاج معاملات بث المحفظة</translation>
-    </message>
-    <message>
-        <source>Masternode cache is empty, skipping payments and governance cache...</source>
-        <translation>ذاكرة التخزين المؤقت ماسترنود فارغة ، وتخطي الدفعات وذاكرة التخزين المؤقت للحوكمة ...</translation>
     </message>
     <message>
         <source>Masternode options:</source>
@@ -5142,14 +4930,6 @@ https://www.transifex.com/projects/p/e4coin/</translation>
         <translation>لن تنشئ المحفظة المعاملات التي تنتهك حدود سلسلة mempool (القيمة الافتراضية: %u)</translation>
     </message>
     <message>
-        <source>Warning: At least %d of %d masternodes are running on a newer software version. Please check latest releases, you might need to update too.</source>
-        <translation>تحذير: يتم تشغيل %d من %d ماسترنود على إصدار برنامج أحدث. يرجى التحقق من أحدث الإصدارات ، فقد تحتاج إلى التحديث أيضًا.</translation>
-    </message>
-    <message>
-        <source>Warning: Every masternode (out of %d known ones) is running on a newer software version. Please check latest releases, it's very likely that you missed a major/critical update.</source>
-        <translation>تحذير: يتم تشغيل كل ماسترنود (خارج %d المعروفة) على إصدار برنامج أحدث. يرجى التحقق من أحدث الإصدارات ، من المحتمل جدًا أنك فاتتك تحديثًا رئيسيًا / هامًا.</translation>
-    </message>
-    <message>
         <source>Warning: Wallet file corrupt, data salvaged! Original %s saved as %s in %s; if your balance or transactions are incorrect you should restore from a backup.</source>
         <translation>تحذير: ملف المحفظة فاسد ، تم انقاذ البيانات! تم حفظ %s الأصلي ك %s في %s؛ إذا كان رصيدك أو كانت معاملاتك غير صحيحة، فيجب عليك الإستعادة من نسخة احتياطية.</translation>
     </message>
@@ -5242,8 +5022,12 @@ https://www.transifex.com/projects/p/e4coin/</translation>
         <translation>عنوان spork غير صالح محدد بـ -sporkaddr</translation>
     </message>
     <message>
-        <source>Keep N E4COIN anonymized (%u-%u, default: %u)</source>
+        <source>Keep N E4CN anonymized (%u-%u, default: %u)</source>
         <translation>الاحتفاظ بـ N داش مجهولة المصدر (%u-%u ، القيمة الافتراضية: %u)</translation>
+    </message>
+    <message>
+        <source>Loading P2P addresses...</source>
+        <translation>تحميل عناوين P2P...</translation>
     </message>
     <message>
         <source>Print this help message and exit</source>
@@ -5294,10 +5078,6 @@ https://www.transifex.com/projects/p/e4coin/</translation>
         <translation>تعيين الحد الأقصى لحجم الفدرة بالبايت (الافتراضي: %d)</translation>
     </message>
     <message>
-        <source>Set the masternode private key</source>
-        <translation>تعيين مفتاح خاص ماسترنود</translation>
-    </message>
-    <message>
         <source>Show all debugging options (usage: --help -help-debug)</source>
         <translation>عرض جميع خيارات التصحيح (الاستخدام: - مساعدة - تصحيح الأخطاء - تصحيح الأخطاء)</translation>
     </message>
@@ -5332,10 +5112,6 @@ https://www.transifex.com/projects/p/e4coin/</translation>
     <message>
         <source>Synchronizing governance objects...</source>
         <translation>مزامنة كائنات الحوكمة ...</translation>
-    </message>
-    <message>
-        <source>Synchronizing masternode payments...</source>
-        <translation>تزامن المدفوعات ماسترنود ...</translation>
     </message>
     <message>
         <source>The source code is available from %s.</source>

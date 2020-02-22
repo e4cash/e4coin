@@ -1,9 +1,9 @@
-// Copyright (c) 2018 The e4Coin Core developers
+// Copyright (c) 2018 The Dash Core developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_CRYPTO_BLS_WORKER_H
-#define E4COIN_CRYPTO_BLS_WORKER_H
+#ifndef E4CN_CRYPTO_BLS_WORKER_H
+#define E4CN_CRYPTO_BLS_WORKER_H
 
 #include "bls.h"
 
@@ -53,6 +53,7 @@ public:
     CBLSWorker();
     ~CBLSWorker();
 
+    void Start();
     void Stop();
 
     bool GenerateContributions(int threshold, const BLSIdVector& ids, BLSVerificationVectorPtr& vvecRet, BLSSecretKeyVector& skShares);
@@ -201,4 +202,4 @@ private:
     }
 };
 
-#endif //E4COIN_CRYPTO_BLS_WORKER_H
+#endif //E4CN_CRYPTO_BLS_WORKER_H

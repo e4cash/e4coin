@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2015 The dash Core developers
+// Copyright (c) 2011-2015 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_QT_TRANSACTIONVIEW_H
-#define E4COIN_QT_TRANSACTIONVIEW_H
+#ifndef BITCOIN_QT_TRANSACTIONVIEW_H
+#define BITCOIN_QT_TRANSACTIONVIEW_H
 
 #include "guiutil.h"
 
@@ -91,6 +91,7 @@ private Q_SLOTS:
     void contextualMenu(const QPoint &);
     void dateRangeChanged();
     void showDetails();
+    void showAddressQRCode();
     void copyAddress();
     void editLabel();
     void copyLabel();
@@ -123,4 +124,4 @@ public Q_SLOTS:
     void computeSum();
 };
 
-#endif // E4COIN_QT_TRANSACTIONVIEW_H
+#endif // BITCOIN_QT_TRANSACTIONVIEW_H

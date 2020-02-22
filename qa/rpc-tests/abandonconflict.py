@@ -1,14 +1,21 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2016 The dash Core developers
+# Copyright (c) 2014-2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
+"""Test the abandontransaction RPC.
 
+ The abandontransaction RPC marks a transaction and all its in-wallet
+ descendants as abandoned which allows their inputs to be respent. It can be
+ used to replace "stuck" or evicted transactions. It only works on transactions
+ which are not included in a block and are not currently in the mempool. It has
+ no effect on transactions which are already conflicted or abandoned.
+"""
 
-from test_framework.test_framework import e4coinTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import *
 import urllib.parse
 
-class AbandonConflictTest(e4coinTestFramework):
+class AbandonConflictTest(BitcoinTestFramework):
     def __init__(self):
         super().__init__()
         self.num_nodes = 2
@@ -16,8 +23,8 @@ class AbandonConflictTest(e4coinTestFramework):
 
     def setup_network(self):
         self.nodes = []
-        self.nodes.append(start_node(0, self.options.tmpdir, ["-debug","-logtimemicros","-minrelaytxfee=0.00001"]))
-        self.nodes.append(start_node(1, self.options.tmpdir, ["-debug","-logtimemicros"]))
+        self.nodes.append(start_node(0, self.options.tmpdir, ["-minrelaytxfee=0.00001"]))
+        self.nodes.append(start_node(1, self.options.tmpdir))
         connect_nodes(self.nodes[0], 1)
 
     def run_test(self):
@@ -38,24 +45,24 @@ class AbandonConflictTest(e4coinTestFramework):
         url = urllib.parse.urlparse(self.nodes[1].url)
         self.nodes[0].disconnectnode(url.hostname+":"+str(p2p_port(1)))
 
-        # Identify the 10E4C outputs
+        # Identify the 10btc outputs
         nA = next(i for i, vout in enumerate(self.nodes[0].getrawtransaction(txA, 1)["vout"]) if vout["value"] == Decimal("10"))
         nB = next(i for i, vout in enumerate(self.nodes[0].getrawtransaction(txB, 1)["vout"]) if vout["value"] == Decimal("10"))
         nC = next(i for i, vout in enumerate(self.nodes[0].getrawtransaction(txC, 1)["vout"]) if vout["value"] == Decimal("10"))
 
         inputs =[]
-        # spend 10E4C outputs from txA and txB
+        # spend 10btc outputs from txA and txB
         inputs.append({"txid":txA, "vout":nA})
         inputs.append({"txid":txB, "vout":nB})
         outputs = {}
 
-        outputs[self.nodes[0].getnewaddress()] = Decimal("14.99998")
+        outputs[self.nodes[0].getnewaddress()] = Decimal("14.915731")
         outputs[self.nodes[1].getnewaddress()] = Decimal("5")
         signed = self.nodes[0].signrawtransaction(self.nodes[0].createrawtransaction(inputs, outputs))
         txAB1 = self.nodes[0].sendrawtransaction(signed["hex"])
 
-        # Identify the 14.99998E4C output
-        nAB = next(i for i, vout in enumerate(self.nodes[0].getrawtransaction(txAB1, 1)["vout"]) if vout["value"] == Decimal("14.99998"))
+        # Identify the 14.915731btc output
+        nAB = next(i for i, vout in enumerate(self.nodes[0].getrawtransaction(txAB1, 1)["vout"]) if vout["value"] == Decimal("14.915731"))
 
         #Create a child tx spending AB1 and C
         inputs = []
@@ -73,9 +80,8 @@ class AbandonConflictTest(e4coinTestFramework):
 
         # Restart the node with a higher min relay fee so the parent tx is no longer in mempool
         # TODO: redo with eviction
-        # Note had to make sure tx did not have AllowFree priority
         stop_node(self.nodes[0],0)
-        self.nodes[0]=start_node(0, self.options.tmpdir, ["-debug","-logtimemicros","-minrelaytxfee=0.0001"])
+        self.nodes[0]=start_node(0, self.options.tmpdir, ["-minrelaytxfee=0.0001"])
 
         # Verify txs no longer in mempool
         assert_equal(len(self.nodes[0].getrawmempool()), 0)
@@ -101,7 +107,7 @@ class AbandonConflictTest(e4coinTestFramework):
 
         # Verify that even with a low min relay fee, the tx is not reaccepted from wallet on startup once abandoned
         stop_node(self.nodes[0],0)
-        self.nodes[0]=start_node(0, self.options.tmpdir, ["-debug","-logtimemicros","-minrelaytxfee=0.00001"])
+        self.nodes[0]=start_node(0, self.options.tmpdir, ["-minrelaytxfee=0.00001"])
         assert_equal(len(self.nodes[0].getrawmempool()), 0)
         assert_equal(self.nodes[0].getbalance(), balance)
 
@@ -110,18 +116,18 @@ class AbandonConflictTest(e4coinTestFramework):
         # But its child tx remains abandoned
         self.nodes[0].sendrawtransaction(signed["hex"])
         newbalance = self.nodes[0].getbalance()
-        assert_equal(newbalance, balance - Decimal("20") + Decimal("14.99998"))
+        assert_equal(newbalance, balance - Decimal("20") + Decimal("14.915731"))
         balance = newbalance
 
         # Send child tx again so its unabandoned
         self.nodes[0].sendrawtransaction(signed2["hex"])
         newbalance = self.nodes[0].getbalance()
-        assert_equal(newbalance, balance - Decimal("10") - Decimal("14.99998") + Decimal("24.9996"))
+        assert_equal(newbalance, balance - Decimal("10") - Decimal("14.915731") + Decimal("24.9996"))
         balance = newbalance
 
         # Remove using high relay fee again
         stop_node(self.nodes[0],0)
-        self.nodes[0]=start_node(0, self.options.tmpdir, ["-debug","-logtimemicros","-minrelaytxfee=0.0001"])
+        self.nodes[0]=start_node(0, self.options.tmpdir, ["-minrelaytxfee=0.0001"])
         assert_equal(len(self.nodes[0].getrawmempool()), 0)
         newbalance = self.nodes[0].getbalance()
         assert_equal(newbalance, balance - Decimal("24.9996"))
@@ -141,20 +147,20 @@ class AbandonConflictTest(e4coinTestFramework):
         connect_nodes(self.nodes[0], 1)
         sync_blocks(self.nodes)
 
-        # Verify that B and C's 10 E4C outputs are available for spending again because AB1 is now conflicted
+        # Verify that B and C's 10 BTC outputs are available for spending again because AB1 is now conflicted
         newbalance = self.nodes[0].getbalance()
         assert_equal(newbalance, balance + Decimal("20"))
         balance = newbalance
 
         # There is currently a minor bug around this and so this test doesn't work.  See Issue #7315
-        # Invalidate the block with the double spend and B's 10 E4C output should no longer be available
+        # Invalidate the block with the double spend and B's 10 BTC output should no longer be available
         # Don't think C's should either
         self.nodes[0].invalidateblock(self.nodes[0].getbestblockhash())
         newbalance = self.nodes[0].getbalance()
         #assert_equal(newbalance, balance - Decimal("10"))
-        print("If balance has not declined after invalidateblock then out of mempool wallet tx which is no longer")
-        print("conflicted has not resumed causing its inputs to be seen as spent.  See Issue #7315")
-        print(str(balance) + " -> " + str(newbalance) + " ?")
+        self.log.info("If balance has not declined after invalidateblock then out of mempool wallet tx which is no longer")
+        self.log.info("conflicted has not resumed causing its inputs to be seen as spent.  See Issue #7315")
+        self.log.info(str(balance) + " -> " + str(newbalance) + " ?")
 
 if __name__ == '__main__':
     AbandonConflictTest().main()

@@ -1,10 +1,10 @@
-// Copyright (c) 2011-2015 The dash Core developers
-// Copyright (c) 2014-2017 The e4Coin Core developers
+// Copyright (c) 2011-2015 The Bitcoin Core developers
+// Copyright (c) 2014-2018 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef E4COIN_QT_GUICONSTANTS_H
-#define E4COIN_QT_GUICONSTANTS_H
+#ifndef BITCOIN_QT_GUICONSTANTS_H
+#define BITCOIN_QT_GUICONSTANTS_H
 
 /* Milliseconds between model updates */
 static const int MODEL_UPDATE_DELAY = 250;
@@ -57,4 +57,4 @@ static const int MAX_URI_LENGTH = 255;
 #define QAPP_APP_NAME_TESTNET "e4Coin-Qt-testnet"
 #define QAPP_APP_NAME_DEVNET "e4Coin-Qt-%s"
 
-#endif // E4COIN_QT_GUICONSTANTS_H
+#endif // BITCOIN_QT_GUICONSTANTS_H

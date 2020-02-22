@@ -21,8 +21,8 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef E4COIN_BIP39_H
-#define E4COIN_BIP39_H
+#ifndef E4CN_BIP39_H
+#define E4CN_BIP39_H
 
 #include "support/allocators/secure.h"
 

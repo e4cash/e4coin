@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2015 The dash Core developers
+# Copyright (c) 2014-2015 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -7,13 +7,13 @@
 # Test addressindex generation and fetching
 #
 
-from test_framework.test_framework import e4coinTestFramework
+from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import *
 from test_framework.script import *
 from test_framework.mininode import *
 import binascii
 
-class SpentIndexTest(e4coinTestFramework):
+class SpentIndexTest(BitcoinTestFramework):
 
     def __init__(self):
         super().__init__()
@@ -23,11 +23,11 @@ class SpentIndexTest(e4coinTestFramework):
     def setup_network(self):
         self.nodes = []
         # Nodes 0/1 are "wallet" nodes
-        self.nodes.append(start_node(0, self.options.tmpdir, ["-debug"]))
-        self.nodes.append(start_node(1, self.options.tmpdir, ["-debug", "-spentindex"]))
+        self.nodes.append(start_node(0, self.options.tmpdir))
+        self.nodes.append(start_node(1, self.options.tmpdir, ["-spentindex"]))
         # Nodes 2/3 are used for testing
-        self.nodes.append(start_node(2, self.options.tmpdir, ["-debug", "-spentindex"]))
-        self.nodes.append(start_node(3, self.options.tmpdir, ["-debug", "-spentindex", "-txindex"]))
+        self.nodes.append(start_node(2, self.options.tmpdir, ["-spentindex"]))
+        self.nodes.append(start_node(3, self.options.tmpdir, ["-spentindex", "-txindex"]))
         connect_nodes(self.nodes[0], 1)
         connect_nodes(self.nodes[0], 2)
         connect_nodes(self.nodes[0], 3)
@@ -36,7 +36,7 @@ class SpentIndexTest(e4coinTestFramework):
         self.sync_all()
 
     def run_test(self):
-        print("Mining blocks...")
+        self.log.info("Mining blocks...")
         self.nodes[0].generate(105)
         self.sync_all()
 
@@ -44,7 +44,7 @@ class SpentIndexTest(e4coinTestFramework):
         assert_equal(chain_height, 105)
 
         # Check that
-        print("Testing spent index...")
+        self.log.info("Testing spent index...")
 
         privkey = "cU4zhap7nPJAWeMFu4j6jLrfPmqakDAzy8zn8Fhb3oEevdm4e5Lc"
         address = "yeMpGzMj3rhtnz48XsfpB8itPHhHtgxLc3"
@@ -52,17 +52,19 @@ class SpentIndexTest(e4coinTestFramework):
         scriptPubKey = CScript([OP_DUP, OP_HASH160, addressHash, OP_EQUALVERIFY, OP_CHECKSIG])
         unspent = self.nodes[0].listunspent()
         tx = CTransaction()
-        amount = int(unspent[0]["amount"] * COIN)
+        tx_fee = Decimal('0.00001')
+        tx_fee_sat = int(tx_fee * COIN)
+        amount = int(unspent[0]["amount"] * COIN) - tx_fee_sat
         tx.vin = [CTxIn(COutPoint(int(unspent[0]["txid"], 16), unspent[0]["vout"]))]
         tx.vout = [CTxOut(amount, scriptPubKey)]
         tx.rehash()
 
         signed_tx = self.nodes[0].signrawtransaction(binascii.hexlify(tx.serialize()).decode("utf-8"))
-        txid = self.nodes[0].sendrawtransaction(signed_tx["hex"], True, False, True)
+        txid = self.nodes[0].sendrawtransaction(signed_tx["hex"], True)
         self.nodes[0].generate(1)
         self.sync_all()
 
-        print("Testing getspentinfo method...")
+        self.log.info("Testing getspentinfo method...")
 
         # Check that the spentinfo works standalone
         info = self.nodes[1].getspentinfo({"txid": unspent[0]["txid"], "index": unspent[0]["vout"]})
@@ -70,7 +72,7 @@ class SpentIndexTest(e4coinTestFramework):
         assert_equal(info["index"], 0)
         assert_equal(info["height"], 106)
 
-        print("Testing getrawtransaction method...")
+        self.log.info("Testing getrawtransaction method...")
 
         # Check that verbose raw transaction includes spent info
         txVerbose = self.nodes[3].getrawtransaction(unspent[0]["txid"], 1)
@@ -81,7 +83,7 @@ class SpentIndexTest(e4coinTestFramework):
         # Check that verbose raw transaction includes input values
         txVerbose2 = self.nodes[3].getrawtransaction(txid, 1)
         assert_equal(txVerbose2["vin"][0]["value"], Decimal(unspent[0]["amount"]))
-        assert_equal(txVerbose2["vin"][0]["valueSat"], amount)
+        assert_equal(txVerbose2["vin"][0]["valueSat"] - tx_fee_sat, amount)
 
         # Check that verbose raw transaction includes address values and input values
         privkey2 = "cU4zhap7nPJAWeMFu4j6jLrfPmqakDAzy8zn8Fhb3oEevdm4e5Lc"
@@ -94,13 +96,13 @@ class SpentIndexTest(e4coinTestFramework):
         tx2.rehash()
         self.nodes[0].importprivkey(privkey)
         signed_tx2 = self.nodes[0].signrawtransaction(binascii.hexlify(tx2.serialize()).decode("utf-8"))
-        txid2 = self.nodes[0].sendrawtransaction(signed_tx2["hex"], True, False, True)
+        txid2 = self.nodes[0].sendrawtransaction(signed_tx2["hex"], True)
 
         # Check the mempool index
         self.sync_all()
         txVerbose3 = self.nodes[1].getrawtransaction(txid2, 1)
         assert_equal(txVerbose3["vin"][0]["address"], address2)
-        assert_equal(txVerbose3["vin"][0]["value"], Decimal(unspent[0]["amount"]))
+        assert_equal(txVerbose3["vin"][0]["value"], Decimal(unspent[0]["amount"]) - tx_fee)
         assert_equal(txVerbose3["vin"][0]["valueSat"], amount)
 
         # Check the database index
@@ -109,10 +111,10 @@ class SpentIndexTest(e4coinTestFramework):
 
         txVerbose4 = self.nodes[3].getrawtransaction(txid2, 1)
         assert_equal(txVerbose4["vin"][0]["address"], address2)
-        assert_equal(txVerbose4["vin"][0]["value"], Decimal(unspent[0]["amount"]))
+        assert_equal(txVerbose4["vin"][0]["value"], Decimal(unspent[0]["amount"]) - tx_fee)
         assert_equal(txVerbose4["vin"][0]["valueSat"], amount)
 
-        print("Passed\n")
+        self.log.info("Passed")
 
 
 if __name__ == '__main__':

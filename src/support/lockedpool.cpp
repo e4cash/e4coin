@@ -1,4 +1,4 @@
-// Copyright (c) 2016 The dash Core developers
+// Copyright (c) 2016 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -357,8 +357,8 @@ LockedPool::LockedPageArena::~LockedPageArena()
 /*******************************************************************************/
 // Implementation: LockedPoolManager
 //
-LockedPoolManager::LockedPoolManager(std::unique_ptr<LockedPageAllocator> allocator):
-    LockedPool(std::move(allocator), &LockedPoolManager::LockingFailed)
+LockedPoolManager::LockedPoolManager(std::unique_ptr<LockedPageAllocator> allocator_in):
+    LockedPool(std::move(allocator_in), &LockedPoolManager::LockingFailed)
 {
 }
 
